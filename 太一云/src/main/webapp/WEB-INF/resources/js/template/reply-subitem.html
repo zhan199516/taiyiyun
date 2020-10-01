@@ -1,0 +1,8 @@
+<div class="reply-box clear">
+    <div id="child-19">
+        <span class="reply-name" v-text="replyNameFormat"></span>
+        <span class="right" v-text="createTimeFormat">12:53:06</span>
+        <div v-for="str in comments" v-text="str"></div>
+    </div>
+    <span class="right delete" v-if="canDelete" @click="deleteMe">删除</span>
+</div>

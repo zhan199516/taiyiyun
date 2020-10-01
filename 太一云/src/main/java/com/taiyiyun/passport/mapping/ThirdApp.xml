@@ -1,0 +1,53 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IThirdAppDao">
+	<resultMap type="com.taiyiyun.passport.po.ThirdApp" id="baseResultMap">
+		<id column="appId" property="appId"/>
+		<result column="appName" property="appName"/>
+		<result column="logoUrl" property="logoUrl"/>
+		<result column="appUrl" property="appUrl"/>
+		<result column="description" property="description"/>
+		<result column="thirdpartAppkey" property="thirdpartAppkey"/>
+	</resultMap>
+
+	<resultMap id="bindResultMap" type="com.taiyiyun.passport.po.ThirdAppExt">
+		<id column="appId" property="appId"/>
+		<result column="appName" property="appName"/>
+		<result column="logoUrl" property="logoUrl"/>
+		<result column="appKey" property="appKey"/>
+		<result column="appSecret" property="appSecret"/>
+		<result column="thirdpartAppkey" property="thirdpartAppkey"/>
+		<result column="coinCallUrl" property="coinCallUrl" />
+	</resultMap>
+
+	<select id="getBindByAppId" resultMap="bindResultMap">
+		select ta.*
+		from third_app ta
+		where ta.canBindCoin = 1
+		and ta.appId = #{appId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getBindByAppKey" resultMap="bindResultMap">
+		select ta.*
+		from third_app ta
+		where ta.canBindCoin = 1
+		and ta.appKey = #{appKey, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getByUserId" resultMap="baseResultMap">
+		select 
+			ta.* 
+		from third_app ta, public_user pu, public_user_like ul 
+		where ta.appId = pu.appkey and pu.userId = ul.likeId
+		and ul.userId = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getAll" resultMap="bindResultMap">
+		select ta.* from third_app ta where ta.canBindCoin = 1
+	</select>
+
+	<select id="getOneByAppId" resultMap="bindResultMap">
+		select ta.*
+		from third_app ta
+		where ta.appId = #{appId, jdbcType=VARCHAR}
+	</select>
+</mapper>

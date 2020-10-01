@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IAppConfigDao">
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.AppConfig">
+		<id column="appKey" property="appKey" jdbcType="VARCHAR" />
+		<result column="appId" property="appId" jdbcType="VARCHAR" />
+		<result column="appName" property="appName" jdbcType="VARCHAR" />
+		<result column="appSecret" property="appSecret" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select appKey, appId, appName, appSecret, status, createTime
+		from app_config
+		where appKey = #{appKey,jdbcType=VARCHAR}
+	</select>
+</mapper>

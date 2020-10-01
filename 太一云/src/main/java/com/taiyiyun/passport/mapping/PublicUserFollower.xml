@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicUserFollowerDao">
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicUserFollower">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="likeId" property="followerId" jdbcType="VARCHAR" />
+		<result column="focusTime" property="focusTime" jdbcType="TIMESTAMP" />
+
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="thumbAvatarUrl" jdbcType="VARCHAR" />
+		<result column="backgroundImgUrl" property="backgroundImgUrl" jdbcType="VARCHAR" />
+		<result column="typeId" property="typeId" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="followersCount" property="followersCount" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<resultMap id="UserResultMap" type="com.taiyiyun.passport.po.PublicUser">
+		<id column="userID" property="id" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="typeId" property="typeId" jdbcType="VARCHAR" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="appkey" property="appKey" jdbcType="VARCHAR" />
+		<result column="userKey" property="userKey" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="thumbAvatarUrl" jdbcType="VARCHAR" />
+		<result column="backgroundImgUrl" property="backgroundImgUrl" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.taiyiyun.passport.bean.CustomBean" id="customMap">
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="value" property="value" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<select id="getFollowerByUserId" parameterType="java.lang.String" resultMap="UserResultMap">
+		select 
+			u.*
+		from 
+			public_user_like fl LEFT JOIN public_user u on u.userId = fl.likeId
+		where fl.userId = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="delete">
+		delete from public_user_like 
+		where userId = #{userId,jdbcType=VARCHAR} and likeId = #{followerId,jdbcType=VARCHAR} 
+	</delete>
+	
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicUserFollower">
+		insert into public_user_like(userId, likeId)
+		select #{userId,jdbcType=VARCHAR}, #{followerId,jdbcType=VARCHAR}
+		from dual
+		where not exists(select 1 from public_user_like where userId = #{userId,jdbcType=VARCHAR} and likeId = #{followerId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="statFollowers" parameterType="java.lang.String" resultMap="customMap">
+		select 'like' as `name`, count(lk.likeId) as `value` from public_user_like lk where lk.likeId = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getMyFollower" resultMap="UserResultMap">
+		select 
+			u.*
+		from 
+			public_user_like fl LEFT JOIN public_user u on u.userId = fl.likeId
+		where fl.userId = #{userId,jdbcType=VARCHAR} and fl.likeId = #{followerId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getRecord" resultMap="BaseResultMap">
+		select * from public_user_like fl
+		where fl.userId = #{userId,jdbcType=VARCHAR} and fl.likeId = #{followerId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getFocusMeUsers" resultMap="UserResultMap">
+		select u.* from public_user_like ul, public_user u where u.userId = ul.userId and ul.likeId = #{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="listFansPageByUserId" parameterType="com.taiyiyun.passport.po.PublicUserFollower" resultMap="BaseResultMap">
+		select publicUser.userName userName,
+		publicUser.avatarUrl avatarUrl,
+		publicUser.description description,
+		publicUserLike.id id,
+		publicUserLike.userId userId,
+		publicUserLike.likeId likeId,
+		publicUserLike.focusTime focusTime
+		from public_user_like publicUserLike
+		INNER  JOIN public_user publicUser on publicUser.userId=publicUserLike.userId
+		where publicUserLike.likeId = #{followerId,jdbcType=VARCHAR}
+		<if test="id != null">
+			and <![CDATA[publicUserLike.id<#{id,jdbcType=BIGINT}]]>
+		</if>
+		order by publicUserLike.id desc
+		limit ${offset}
+	</select>
+
+	<select id="listFollowersByUserId" parameterType="com.taiyiyun.passport.po.PublicUserFollower" resultMap="BaseResultMap">
+		select publicUser.userName userName,
+		publicUser.avatarUrl avatarUrl,
+		publicUser.description description,
+		publicUserLike.id id,
+		publicUserLike.userId userId,
+		publicUserLike.likeId likeId,
+		publicUserLike.focusTime focusTime
+		from public_user_like publicUserLike
+		INNER  JOIN public_user publicUser on publicUser.userId=publicUserLike.likeId
+		where publicUserLike.userId = #{userId,jdbcType=VARCHAR}
+		<if test="id != null">
+			and <![CDATA[publicUserLike.id<#{id,jdbcType=BIGINT}]]>
+		</if>
+		order by publicUserLike.id desc
+		limit ${offset}
+	</select>
+
+	<select id="listFansByUserIds" parameterType="com.taiyiyun.passport.po.PublicUserFollower" resultMap="BaseResultMap">
+		select
+			publicUser.userName userName,
+			publicUser.avatarUrl avatarUrl,
+			publicUser.thumbAvatarUrl thumbAvatarUrl,
+			publicUser.backgroundImgUrl backgroundImgUrl,
+			publicUser.typeId typeId,
+			publicUser.createTime createTime,
+			publicUser.description description,
+			publicUserLike.id id,
+			publicUserLike.userId userId,
+			publicUserLike.likeId likeId,
+			publicUserLike.focusTime focusTime,
+			_publicUserLike.fansCount fansCount
+		from public_user_like publicUserLike
+		INNER  JOIN public_user publicUser on publicUser.userId=publicUserLike.userId
+		INNER  JOIN (
+			select
+				publicUserLike.likeId likeId,
+				count(publicUserLike.id) fansCount
+			from public_user_like publicUserLike
+			<where>
+				<trim suffixOverrides="and">
+					<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+						publicUserLike.likeId = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</trim>
+			</where>
+			group by publicUserLike.likeId
+		) _publicUserLike on publicUserLike.likeId=_publicUserLike.likeId
+		<where>
+			<trim suffixOverrides="and">
+				<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+					publicUserLike.likeId = #{item, jdbcType=VARCHAR}
+				</foreach>
+			</trim>
+		</where>
+		order by publicUserLike.id desc
+		<if test="offset != null">
+			limit ${offset}
+		</if>
+	</select>
+
+	<select id="listFollowersByUserIds" parameterType="com.taiyiyun.passport.po.PublicUserFollower" resultMap="BaseResultMap">
+		select
+			publicUser.userName userName,
+			publicUser.avatarUrl avatarUrl,
+			publicUser.thumbAvatarUrl thumbAvatarUrl,
+			publicUser.backgroundImgUrl backgroundImgUrl,
+			publicUser.typeId typeId,
+			publicUser.createTime createTime,
+			publicUser.description description,
+			publicUserLike.id id,
+			publicUserLike.userId userId,
+			publicUserLike.likeId likeId,
+			publicUserLike.focusTime focusTime,
+			_publicUserLike.followersCount followersCount
+		from public_user_like publicUserLike
+		INNER  JOIN public_user publicUser on publicUser.userId=publicUserLike.likeId
+		INNER  JOIN (
+			select
+				publicUserLike.userId userId,
+				count(publicUserLike.id) followersCount
+			from public_user_like publicUserLike
+			<where>
+				<trim suffixOverrides="and">
+					<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+						publicUserLike.userId = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</trim>
+			</where>
+			group by publicUserLike.userId
+		) _publicUserLike on publicUserLike.userId=_publicUserLike.userId
+		<where>
+			<trim suffixOverrides="and">
+				<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+					publicUserLike.userId = #{item, jdbcType=VARCHAR}
+				</foreach>
+			</trim>
+		</where>
+		order by publicUserLike.id desc
+		<if test="offset != null">
+			limit ${offset}
+		</if>
+	</select>
+	
+</mapper>

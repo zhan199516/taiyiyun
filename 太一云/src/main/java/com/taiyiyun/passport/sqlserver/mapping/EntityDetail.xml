@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IEntityDetailDao">
+
+	<delete id="deleteEndityDetailByEntityId" parameterType="java.lang.String" >
+		delete from EntityDetail where EntityId= #{entityId, jdbcType=VARCHAR}
+	</delete>
+
+
+	<insert id="insertSelective" parameterType="com.taiyiyun.passport.sqlserver.po.EntityDetail">
+		insert into EntityDetail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="entityId != null">
+				EntityId,
+			</if>
+			<if test="infoKey != null">
+				InfoKey,
+			</if>
+			<if test="infoValue != null">
+				InfoValue,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="isPublic != null">
+				IsPublic,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="entityId != null">
+				#{entityId,jdbcType=VARCHAR},
+			</if>
+			<if test="infoKey != null">
+				#{infoKey,jdbcType=VARCHAR},
+			</if>
+			<if test="infoValue != null">
+				#{infoValue,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="isPublic != null">
+				#{isPublic,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectEntityDetailHasValidDateByMobile" parameterType="java.util.Map" resultType="com.taiyiyun.passport.sqlserver.po.EntityDetail">
+		SELECT
+			ed.id,
+			ed.EntityId entityId,
+			ed.InfoKey infoKey,
+			ed.InfoValue infoValue,
+			ed.Status status,
+			ed.IsPublic isPublic
+		FROM
+			EntityDetail ed
+		JOIN UserEntity ue ON ed.EntityId = ue.EntityId
+		JOIN Users u on ue.UUID = u.UUID
+		WHERE
+			u.Mobile = #{mobile, jdbcType = VARCHAR}
+		  AND u.MobilePrefix = #{mobilePrefix, jdbcType = VARCHAR}
+		AND ed.InfoKey = 'validDateStart'
+	</select>
+</mapper>

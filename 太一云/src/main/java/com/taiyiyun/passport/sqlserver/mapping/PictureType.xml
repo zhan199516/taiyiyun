@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IPictureTypeDao">
+
+
+	<select id="getAllPictureTypes" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.PictureType">
+		select * from PictureType order by PTypeID
+	</select>
+
+
+</mapper>

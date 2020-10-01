@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleForwardDao">
+	<resultMap id="baseResultMap" type="com.taiyiyun.passport.po.PublicArticleForward">
+		<id column="forwardId" property="forwardId" jdbcType="BIGINT" />
+		<result column="operatorId" property="operatorId" jdbcType="VARCHAR" />
+		<result column="articleId" property="articleId" jdbcType="VARCHAR" />
+		<result column="fromType" property="fromType" jdbcType="SMALLINT" />
+		<result column="toType" property="toType" jdbcType="SMALLINT" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<insert id="save">
+		insert into public_article_forward 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="operatorId != null">operatorId,</if>
+			<if test="articleId != null">articleId,</if>
+			<if test="fromType != null">fromType,</if>
+			<if test="toType != null">toType,</if>
+			<if test="createTime != null">createTime,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="operatorId != null">#{operatorId, jdbcType=VARCHAR},</if>
+			<if test="articleId != null">#{articleId, jdbcType=VARCHAR},</if>
+			<if test="fromType != null">#{fromType, jdbcType=SMALLINT},</if>
+			<if test="toType != null">#{toType, jdbcType=SMALLINT},</if>
+			<if test="createTime != null">#{createTime, jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+	
+</mapper>

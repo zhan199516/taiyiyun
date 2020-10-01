@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.mosquitto.dao.IMqttUserDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.mosquitto.po.MqttUser">
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="pw" property="pw" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		username, pw
+	</sql>
+
+	<select id="getByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from users where super = 0 and username = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insertUserIn" parameterType="com.taiyiyun.passport.po.PublicArticleLevel" >
+		replace into users(username, pw, super) values( #{userId, jdbcType=VARCHAR}, #{pw, jdbcType=VARCHAR}, 0)
+	</insert>
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IAntifakeAddressStoreDao">
+	
+	<resultMap id="baseResultMap" type="com.taiyiyun.passport.sqlserver.po.AntifakeAddressStore">
+		<result property="address" column="Address" javaType="java.lang.String"/>
+		<result property="symbol" column="Symbol" javaType="java.lang.String"/>
+		<result property="status" column="Status" javaType="java.lang.Boolean"/>
+		<result property="secretkey" column="Secretkey" javaType="java.lang.String"/>
+		<result property="transferStatus" column="TransferStatus" javaType="java.lang.Boolean"/>
+		<result property="creationTime" column="CreationTime" javaType="java.util.Date"/>
+	</resultMap>
+	
+	<select id="getAvailableAddress" resultMap="baseResultMap">
+		select Top ${count} * from Antifake_AddressStore where Status = 0 and TransferStatus = 0 and Secretkey is not null and Symbol = #{symbol, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="changeStatusUsed" parameterType="java.lang.String">
+		update Antifake_AddressStore set Status=1, TransferStatus = 1 where  Address = #{address, jdbcType=VARCHAR}
+	</update>
+</mapper>

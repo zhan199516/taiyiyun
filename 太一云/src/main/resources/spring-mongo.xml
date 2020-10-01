@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+                        http://www.springframework.org/schema/data/mongo       
+        				http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
+        				http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+                        http://www.springframework.org/schema/aop 
+                        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+    					http://www.springframework.org/schema/tx 
+    					http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+    					http://www.springframework.org/schema/util 
+    					http://www.springframework.org/schema/util/spring-util-4.3.xsd ">
+	
+	<bean id="mongoCredentials" class="org.springframework.data.authentication.UserCredentials">
+		<constructor-arg name="username" value="${mongo.username}" />
+		<constructor-arg name="password" value="${mongo.password}" />
+	</bean>
+	
+	<mongo:mongo-client id="passport"  host="${mongo.host}" port="${mongo.port}" credentials="${mongo.username}:${mongo.password}@${mongo.dbname}">
+		<mongo:client-options 
+			connections-per-host="${mongo.connectionsPerHost}"
+			threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+			connect-timeout="${mongo.connectTimeout}"
+			max-wait-time="${mongo.maxWaitTime}"
+            socket-keep-alive="${mongo.socketKeepAlive}" 
+            socket-timeout="${mongo.socketTimeout}" 
+            heartbeat-connect-timeout="${mongo.heartbeatConnectTimeout}"
+            heartbeat-socket-timeout="${mongo.heartbeatSocketTimeout}"
+            min-connections-per-host="${mongo.minConnectionsPerHost}"
+            description="${mongo.description}"
+            heartbeat-frequency="${mongo.heartbeatFrequency}"
+            min-heartbeat-frequency="${mongo.minHeartbeatFrequency}"
+            max-connection-idle-time="${mongo.maxConnectionIdleTime}"
+            max-connection-life-time="${mongo.maxConnectionLifeTime}"
+            write-concern="${mongo.writeConcern}" />
+	</mongo:mongo-client>
+	
+	<mongo:db-factory id="mongoDbFactory" mongo-ref="passport" dbname="${mongo.dbname}" />
+	
+	<!-- 映射转换器，扫描back-package目录下的文件，根据注释，把它们作为MongoDB的一个Collection的映射 -->
+    <mongo:mapping-converter id="mongoConverter" base-package="com.taiyiyun.passport.mongo.po" />
+    
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+       <constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+       <constructor-arg name="mongoConverter" ref="mongoConverter" />
+    </bean>
+    
+    <mongo:gridFsTemplate id="gridFsTemplcate" db-factory-ref="mongoDbFactory" converter-ref="mongoConverter" />
+    
+    <!-- MongoDB Bean的仓库目录，会自动扫描扩展了MongoRepository接口的接口进行注入 -->  
+    <mongo:repositories base-package="com.taiyiyun.passport.mongo.dao.impl" />
+</beans>

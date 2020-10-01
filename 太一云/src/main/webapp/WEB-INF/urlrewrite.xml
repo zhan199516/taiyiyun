@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN" "\\urlrewrite3.2.dtd">
+  
+<urlrewrite>
+  <rule>
+    <note>邀请用户配送地址重写</note>
+    <note>/invitation/share-activity.jsp</note>
+    <from>/invitations/([A-Za-z0-9]+)/([A-Za-z0-9]+)/([A-Za-z0-9]+)/([A-Za-z0-9]+).c</from>
+    <to type="forward">
+     /invitation/share-activity.jsp?Authentication=$1&amp;IUserCount=$2&amp;InvitationUserId=$3&amp;InvitationId=$4
+    </to>
+  </rule>
+
+   <rule>
+    <note>邀请用户注册重写</note>
+    <note>/invitation/friend-activity.jsp</note>
+    <from>/invitations/([A-Za-z0-9]+)/([A-Za-z0-9]+).c</from>
+    <to type="forward">
+     /invitation/friend-activity.jsp?InvitationUserId=$1&amp;InvitationId=$2
+    </to>
+  </rule>
+</urlrewrite>

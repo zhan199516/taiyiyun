@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicUserBlockDao">
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicUserBlock">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="blockId" property="blockId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="UserResultMap" type="com.taiyiyun.passport.po.PublicUser">
+		<id column="userID" property="id" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="typeId" property="typeId" jdbcType="VARCHAR" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="appkey" property="appKey" jdbcType="VARCHAR" />
+		<result column="userKey" property="userKey" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="thumbAvatarUrl" jdbcType="VARCHAR" />
+		<result column="backgroundImgUrl" property="backgroundImgUrl" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="com.taiyiyun.passport.bean.CustomBean" id="customMap">
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="value" property="value" jdbcType="VARCHAR"/>
+	</resultMap>
+
+
+	<select id="getBlockByUserId" parameterType="java.lang.String" resultMap="UserResultMap">
+		select
+		u.*
+		from
+		public_user_block fl LEFT JOIN public_user u on u.userId = fl.blockId
+		where fl.userId = #{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectBlockByUserIdAndBlockUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) count from public_user_block p where p.userId=#{userId,jdbcType=VARCHAR} and p.blockId=#{blockId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="delete">
+		delete from public_user_block
+		where userId = #{userId,jdbcType=VARCHAR} and blockId = #{blockId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicUserBlock">
+		insert into public_user_block(userId, blockId)
+		select #{userId,jdbcType=VARCHAR}, #{blockId,jdbcType=VARCHAR}
+		from dual
+		where not exists(select 1 from public_user_block where userId = #{userId,jdbcType=VARCHAR} and blockId = #{blockId,jdbcType=VARCHAR})
+	</insert>
+
+
+	<select id="getMyBlock" resultMap="UserResultMap">
+		select
+		u.*
+		from
+		public_user_block fl LEFT JOIN public_user u on u.userId = fl.blockId
+		where fl.userId = #{userId,jdbcType=VARCHAR} and fl.blockId = #{blockId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getBlocksMeUsers" resultMap="UserResultMap">
+		select u.* from public_user_block ul, public_user u where u.userId = ul.userId and ul.blockId = #{userId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

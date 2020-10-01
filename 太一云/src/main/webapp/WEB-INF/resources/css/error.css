@@ -1,0 +1,26 @@
+/*清除默认样式*/
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    height: 100%;
+}
+body{
+    font-family: "SF Pro SC","SF Pro Display","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+/*设置公共样式*/
+html{
+    font-size: 100px;
+}
+/*错误页*/
+.error{
+    font-size: 15px;
+    color: #999;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 50%;
+    margin-top: -12px;
+}

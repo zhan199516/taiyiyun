@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IAccountDao">
+	<resultMap type="com.taiyiyun.passport.po.Account" id="baseResultMap">
+		<result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+		<result column="recommender" property="recommendUserId" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="com.taiyiyun.passport.po.Account">
+		insert into account (uuid, recommender, address)
+		select #{uuid,jdbcType=VARCHAR}, #{recommendUserId,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}
+		from dual where not exists (select 1 from account where uuid = #{uuid,jdbcType=VARCHAR} and recommender = #{recommendUserId,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="getByUUID" parameterType="java.lang.String" resultMap="baseResultMap">
+		select uuid, recommender, address from account where uuid = #{uuid,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

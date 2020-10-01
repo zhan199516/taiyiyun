@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IWechatDao">
+
+	<select id="selectById" parameterType="java.lang.String" resultType="java.lang.String">
+		select jsApiTicket from wechat_token where appId = #{appId, jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateBegin">
+		update wechat_token set updating = #{nowLong, jdbcType=BIGINT}
+		where appId = #{appId, jdbcType=VARCHAR}
+		and ( accessLastTime is null or accessLastTime &lt; #{oldLong, jdbcType=BIGINT})
+		and ( updating = 0 or updating &lt; #{thenLong, jdbcType=BIGINT})
+	</update>
+
+	<update id="updateRoll">
+		update  wechat_token set updating = 0
+		where appId = #{appId, jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateEnd">
+		update  wechat_token set updating = 0,
+		accessLastTime= #{accessLastTime, jdbcType=BIGINT}, accessToken = #{accessToken, jdbcType=VARCHAR},
+		jsApiTicket = #{jsApiTicket, jdbcType=VARCHAR}, jsApiLastTime = #{jsApiLastTime, jdbcType=BIGINT}
+		where appId = #{appId, jdbcType=VARCHAR}
+	</update>
+
+</mapper>

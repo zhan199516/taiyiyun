@@ -1,0 +1,153 @@
+/*清除默认样式*/
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    min-height: 100%;
+}
+body{
+    font-family: "SF Pro SC","SF Pro Display","SF Pro Icons","PingFang SC","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+img {
+    border: none;
+    vertical-align: middle;
+}
+/*设置公共样式*/
+html{
+    font-size: 100px;
+}
+.clear:after{
+    content: "";
+    display: block;
+    clear: both;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
+/*证书页*/
+.cer-body{
+    padding: 0.3rem;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.section-top{
+    border: 1px solid #798490;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    background: #4c73a1;
+}
+.cer-name{
+    font-size: 20px;
+    color: #fff;
+    text-align: center;
+    line-height: 28px;
+    margin: 24px 0 6px 0;
+    position: relative;
+
+}
+.cer-name span{
+    position: absolute;
+    color: #80bbff;
+    font-size: 11px;
+    line-height: 16px;
+    top: -11px;
+
+}
+fieldset{
+    border:none;
+    border-top:1px dashed #3f5f85;
+}
+legend{
+    text-align: center;
+    font-size: 14px;
+    color: #a1bdde;
+    line-height: 20px;
+}
+.cer-number{
+    margin: 9px 0.21rem 0;
+    height: 60px;
+    background: url("../images/qrcode-share.png") no-repeat right;
+    background-size: 54px 54px;
+    padding-bottom: 16px;
+}
+.cer-number .cer-number-key{
+    font-size: 14px;
+    padding-top: 14px;
+}
+.cer-number .cer-number-value{
+    font-size: 18px;
+    color: #bad9fe;
+    text-shadow: 0 1px 0 #000;
+    margin-top: 6px;
+    font-family:Courier-Bold;
+}
+.section-bottom{
+    border: 1px solid #bfbfbf;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+}
+
+.hash{
+    background: #e6e6e6;
+    padding: 17px 0 17px 0.21rem;
+}
+.hash img{
+    width: 26px;
+    margin-top: 1px;
+}
+.hash div{
+    font-family:Courier;
+    font-size:12px;
+    color:#6c6c6c;
+    white-space:normal;
+    word-break:break-all;
+    width: 5.5rem;
+    line-height: 14px;
+    margin-left: 8px;
+}
+.works-info{
+    background: #f2f2f2;
+    padding-top: 14px;
+    text-align:center;
+}
+.works-name-key{
+    font-size: 13px;
+    color:#7a7a7a;
+    text-align: center;
+    margin-bottom: 6px;
+}
+.works-name-val{
+    font-size:22px;
+    color:#254b78;
+    padding: 0 0.21rem;
+
+}
+.work-info-key{
+    font-size:12px;
+    color:#454545;
+    margin-top: 10px;
+    line-height: 17px;
+}
+.platform{
+    margin-top: 17px;
+}
+.work-info-val{
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 2px;
+}
+.work-info-id{
+    font-size: 10px;
+    line-height: 14px;
+    color:#7a7a7a;
+}
+.statement{
+    font-size:10px;
+    color:#979797;
+    padding: 20px 0 7px 0;
+}

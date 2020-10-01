@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IPictureTempDao">
+
+
+	<select id="getByUUID" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.PictureTemp">
+		select * from Picture_Temp pt where pt.UUID=#{UUID, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getByUUIDAndPictureType" parameterType="java.util.Map" resultType="com.taiyiyun.passport.sqlserver.po.PictureTemp">
+		select * from Picture_Temp pt where pt.UUID=#{UUID, jdbcType=VARCHAR} and pt.PTypeID=#{PTypeID, jdbcType=INTEGER}
+	</select>
+
+	<insert id="insert" parameterType="com.taiyiyun.passport.sqlserver.po.PictureTemp">
+		insert into Picture_Temp(UUID,PTypeID,FileName,Finished,CreationTime) values(#{UUID, jdbcType=VARCHAR},#{PTypeID, jdbcType=INTEGER}, #{FileName, jdbcType=VARCHAR},#{Finished, jdbcType=INTEGER},#{CreationTime, jdbcType=TIMESTAMP})
+	</insert>
+
+	<update id="update" parameterType="com.taiyiyun.passport.sqlserver.po.PictureTemp">
+		update Picture_Temp set FileName=#{FileName, jdbcType=VARCHAR},Finished=#{Finished, jdbcType=INTEGER},CreationTime=#{CreationTime, jdbcType=TIMESTAMP} where UUID=#{UUID, jdbcType=VARCHAR} and PTypeID=#{PTypeID, jdbcType=INTEGER}
+	</update>
+
+
+</mapper>

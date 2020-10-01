@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IYunsignInterfaceDao">
+	
+	<resultMap id="baseResultMap" type="com.taiyiyun.passport.sqlserver.po.YunsignInterface">
+		<id property="getId" column="GetID" javaType="java.lang.Long"/>
+		<result property="uuid" column="UUID" javaType="java.lang.String"/>
+		<result property="interfaceType" column="Interface" javaType="java.lang.Integer"/>
+		<result property="status" column="Status" javaType="java.lang.Integer"/>
+		<result property="creationTime" column="CreationTime" javaType="java.util.Date"/>
+		<result property="code" column="Code" javaType="java.lang.String"/>
+		<result property="rDesc" column="RDesc" javaType="java.lang.String"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="com.taiyiyun.passport.sqlserver.po.YunsignInterface" useGeneratedKeys="true" keyProperty="getId" keyColumn="GetID">
+		insert into YunsignInterface(UUID, Interface, Status, CreationTime, Code, RDesc) values(#{uuid}, #{interfaceType}, #{status}, #{creationTime}, #{code}, #{rDesc})
+	</insert>
+	
+</mapper>

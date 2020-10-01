@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ICollectExpressionDao">
+    <resultMap type="com.taiyiyun.passport.po.chat.CollectExpression" id="baseResultMap">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="pic_md5" property="picMd5" jdbcType="CHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id"  parameterType="com.taiyiyun.passport.po.chat.CollectExpression">
+        insert into public_pic_collect_expression(user_id,pic_md5,create_time) values(#{userId, jdbcType=VARCHAR}, #{picMd5, jdbcType=CHAR},#{createTime, jdbcType=DATE})
+    </insert>
+
+    <select id="getByUserId" parameterType="java.lang.String" resultMap="baseResultMap">
+        select id, user_id, pic_md5,create_time from public_pic_collect_expression where user_id=#{userId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+        select id,pic_md5,user_id,create_time from public_pic_collect_expression where id=#{id,jdbcType=INTEGER}
+    </select>
+    
+      <delete id="delExpression">
+        delete from public_pic_collect_expression where id in(
+          <foreach collection="idList" item="id" separator=",">
+              #{id}
+          </foreach>
+          )
+          and user_id=#{userId,jdbcType=VARCHAR}
+     </delete>
+    
+	
+
+
+</mapper>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicUserConfigDao">
+
+	<!--<cache type="com.taiyiyun.passport.mybatis.MybatisRedisCache">-->
+		<!--<property name="eviction" value="LRU" />-->
+		<!--<property name="flushInterval" value="6000000" />-->
+		<!--<property name="size" value="1024" />-->
+		<!--<property name="readOnly" value="false" />-->
+	<!--</cache>-->
+
+
+	<parameterMap id="publicUserConfigParam" type="com.taiyiyun.passport.po.PublicUserConfig"/>
+
+	<resultMap id="publicUserConfigResult" type="com.taiyiyun.passport.po.PublicUserConfig">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="setupUserId" property="setupUserId" jdbcType="VARCHAR" />
+		<result column="targetId" property="targetId" jdbcType="VARCHAR" />
+		<result column="isDisturb" property="isDisturb" jdbcType="INTEGER" />
+		<result column="isTop" property="isTop" jdbcType="INTEGER" />
+		<result column="userType" property="userType" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+
+		<association property="user" javaType="com.taiyiyun.passport.po.PublicUser">
+			<id column="userId" property="id" jdbcType="VARCHAR" />
+			<result column="user_userName" property="userName" jdbcType="VARCHAR" />
+			<result column="user_status" property="status" jdbcType="VARCHAR" />
+			<result column="user_avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+			<result column="user_createTime" property="createTime" jdbcType="TIMESTAMP" />
+			<result column="user_description" property="description" jdbcType="VARCHAR" />
+			<result column="user_typeId" property="typeId" jdbcType="VARCHAR" />
+			<result column="user_uuid" property="uuid" jdbcType="VARCHAR" />
+			<result column="user_version" property="version" jdbcType="VARCHAR" />
+			<result column="user_appkey" property="appKey" jdbcType="VARCHAR" />
+			<result column="user_userKey" property="userKey" jdbcType="VARCHAR" />
+			<result column="user_thumbAvatarUrl" property="thumbAvatarUrl" jdbcType="VARCHAR" />
+			<result column="user_backgroundImgUrl" property="backgroundImgUrl" jdbcType="VARCHAR" />
+			<result column="user_barrier" property="isBarrier" jdbcType="INTEGER" />
+			<result column="user_useTime" property="useTime" jdbcType="TIMESTAMP" />
+			<result column="user_mobile" property="mobile" jdbcType="VARCHAR" />
+			<result column="user_lastMsgPullTime" property="lastMsgPullTime" jdbcType="BIGINT"/>
+			<result column="user_mobilePrefix" property="mobilePrefix" jdbcType="VARCHAR" />
+		</association>
+	</resultMap>
+
+	<sql id="userConfig_select_fields">
+		userConfig.id,
+		userConfig.setupUserId,
+		userConfig.targetId,
+		userConfig.isDisturb,
+		userConfig.isTop,
+		userConfig.userType,
+		userConfig.createTime,
+		userConfig.modifyTime
+	</sql>
+
+	<sql id="userConfig_insert_fields">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="setupUserId != null">setupUserId,</if>
+			<if test="targetId != null">targetId,</if>
+			<if test="isDisturb != null">isDisturb,</if>
+			<if test="isTop != null">isTop,</if>
+			<if test="userType != null">userType,</if>
+			<if test="createTime != null">createTime,</if>
+			<if test="modifyTime != null">modifyTime</if>
+		</trim>
+	</sql>
+
+	<sql id="userConfig_insert_values">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="setupUserId != null">#{setupUserId,jdbcType=VARCHAR},</if>
+			<if test="targetId != null">#{targetId,jdbcType=VARCHAR},</if>
+			<if test="isDisturb != null">#{isDisturb,jdbcType=VARCHAR},</if>
+			<if test="isTop != null">#{isTop,jdbcType=VARCHAR},</if>
+			<if test="userType != null">#{userType,jdbcType=VARCHAR},</if>
+			<if test="createTime != null">#{createTime,jdbcType=INTEGER},</if>
+			<if test="modifyTime != null">#{modifyTime,jdbcType=VARCHAR}</if>
+		</trim>
+	</sql>
+
+	<sql id="userConfig_update_set">
+		<trim prefixOverrides=",">
+			<if test="setupUserId != null">, setupUserId = #{setupUserId,jdbcType=VARCHAR}</if>
+			<if test="targetId != null">, targetId = #{targetId,jdbcType=VARCHAR}</if>
+			<if test="isDisturb != null">, isDisturb = #{isDisturb,jdbcType=INTEGER}</if>
+			<if test="isTop != null">, isTop = #{isTop,jdbcType=INTEGER}</if>
+			<if test="userType != null">, userType = #{userType,jdbcType=INTEGER}</if>
+			<if test="createTime != null">, createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+			<if test="modifyTime != null">, modifyTime = #{modifyTime,jdbcType=BIGINT}</if>
+		</trim>
+	</sql>
+	<sql id="userConfig_update_where_criterias">
+		<trim prefixOverrides="AND">
+			<if test="setupUserId != null">AND setupUserId = #{setupUserId,jdbcType=VARCHAR}</if>
+			<if test="targetId != null">AND targetId = #{targetId,jdbcType=VARCHAR}</if>
+			<if test="isDisturb != null">AND isDisturb = #{isDisturb,jdbcType=INTEGER}</if>
+			<if test="isTop != null">AND isTop = #{isTop,jdbcType=INTEGER}</if>
+			<if test="userType != null">AND userType = #{userType,jdbcType=INTEGER}</if>
+			<if test="createTime != null">AND createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+			<if test="modifyTime != null">AND modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</sql>
+
+	<sql id="userConfig_select_where_criterias">
+		<trim prefixOverrides="AND">
+			<if test="setupUserId != null">AND userConfig.setupUserId = #{setupUserId,jdbcType=VARCHAR}</if>
+			<if test="targetId != null">AND userConfig.targetId = #{targetId,jdbcType=VARCHAR}</if>
+			<if test="isDisturb != null">AND userConfig.isDisturb = #{isDisturb,jdbcType=INTEGER}</if>
+			<if test="isTop != null">AND userConfig.isTop = #{isTop,jdbcType=INTEGER}</if>
+			<if test="userType != null">AND userConfig.userType = #{userType,jdbcType=INTEGER}</if>
+			<if test="createTime != null">AND userConfig.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+			<if test="modifyTime != null">AND userConfig.expireTime = #{expireTime,jdbcType=BIGINT}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterMap="publicUserConfigParam">
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into public_user_config
+		<include refid="userConfig_insert_fields"/>
+		values
+		<include refid="userConfig_insert_values"/>
+	</insert>
+
+	<update id="update" parameterMap="publicUserConfigParam">
+		update public_user_config
+		set <include refid="userConfig_update_set"/>
+		<where>
+			<include refid="userConfig_update_where_criterias"/>
+		</where>
+	</update>
+
+	<update id="updateBytargetId" parameterMap="publicUserConfigParam">
+		update public_user_config
+		set <include refid="userConfig_update_set"/>
+		where targetId = #{targetId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateByUserId" parameterMap="publicUserConfigParam">
+		update public_user_config
+		set <include refid="userConfig_update_set"/>
+		where targetId = #{targetId,jdbcType=VARCHAR}
+			and setupUserId = #{setupUserId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateBySetupUserId" parameterMap="publicUserConfigParam">
+		update public_user_config
+		set <include refid="userConfig_update_set"/>
+		where targetId is null
+		and setupUserId = #{setupUserId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateById" parameterMap="publicUserConfigParam">
+		update public_user_config
+		set <include refid="userConfig_update_set"/>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+	<delete id="deleteBySetupUserId" parameterType="java.lang.String">
+		delete public_user_config
+		where setupUserId = #{setupUserId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteBytargetId" parameterType="java.lang.String">
+		delete public_user_config
+		where targetId = #{targetId,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteByUserId" parameterType="java.lang.String">
+		delete public_user_config
+		where setupUserId = #{setupUserId,jdbcType=VARCHAR} AND
+		targetId = #{targetId,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="listPage" parameterMap="publicUserConfigParam" resultMap="publicUserConfigResult">
+		select <include refid="userConfig_select_fields"/>
+		from public_user_config userConfig
+		where <include refid="userConfig_select_where_criterias"/>
+		limit ${start},${offset}
+	</select>
+
+	<select id="list" parameterMap="publicUserConfigParam" resultMap="publicUserConfigResult">
+		select <include refid="userConfig_select_fields"/>
+		from public_user_config userConfig
+		<where>
+			<include refid="userConfig_select_where_criterias"/>
+		</where>
+	</select>
+
+	<select id="getOneById" parameterMap="publicUserConfigParam" resultMap="publicUserConfigResult">
+		select <include refid="userConfig_select_fields"/>
+		from public_user_config userConfig
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="listBySetupUserId" parameterMap="publicUserConfigParam" resultMap="publicUserConfigResult">
+		select
+			userConfig.id userConfig_id,
+			userConfig.setupUserId userConfig_setupUserId,
+			userConfig.targetId userConfig_targetId,
+			userConfig.isDisturb userConfig_isDisturb,
+			userConfig.isTop userConfig_isTop,
+			userConfig.userType userConfig_userType,
+			userConfig.createTime userConfig_createTime,
+			userConfig.modifyTime userConfig_modifyTime
+		from public_user_config userConfig
+		where setupUserId = #{setupUserId,jdbcType=VARCHAR} and userConfig.userType > 0
+	</select>
+
+	<select id="listByTargetId" parameterMap="publicUserConfigParam" resultMap="publicUserConfigResult">
+		select <include refid="userConfig_select_fields"/>
+		from public_user_config userConfig
+		where targetId = #{targetId,jdbcType=VARCHAR}
+	</select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ISharePointDao">
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.SharePoint">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="balance" property="balance" jdbcType="DECIMAL" />
+	</resultMap>
+	
+	<insert id="save">
+		insert into share_point(id, uuid, balance) 
+		select replace(uuid(),'-',''), #{uuid, jdbcType=VARCHAR} , #{balance, jdbcType=DECIMAL}
+		from dual where not exists (select 1 from share_point where uuid = #{uuid, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="deductSharePoint">
+		update share_point 
+		set balance = balance - #{balance, jdbcType=DECIMAL} 
+		where uuid = #{uuid, jdbcType=VARCHAR} and balance >= #{balance, jdbcType=DECIMAL}
+	</update>
+	
+	<update id="addSharePoint">
+		update share_point 
+		set balance = balance + #{balance, jdbcType=DECIMAL}
+		where uuid = #{uuid, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getSharePointByUUID" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select id, uuid, balance from share_point where uuid = #{uuid, jdbcType=VARCHAR}
+	</select>
+</mapper>

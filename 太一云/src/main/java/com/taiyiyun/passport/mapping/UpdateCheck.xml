@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taiyiyun.passport.dao.IUpdateCheckDao">
+	<resultMap id="baseResultMap" type="com.taiyiyun.passport.po.UpdateCheck">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="text" property="text" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="qqGroup" property="qqGroup" jdbcType="VARCHAR" />
+		<result column="appType" property="appType" jdbcType="BIT" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="rightButton" property="rightButton" jdbcType="VARCHAR" />
+		<result column="leftButton" property="leftButton" jdbcType="VARCHAR" />
+		<result column="updateStatus" property="updateStatus" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="getCurrentUpdateCheck" resultMap="baseResultMap">
+		select * from update_check where appType = #{deviceType, jdbcType=INTEGER} and versionMatch = 0  order by createTime desc limit 1
+	</select>
+
+	<select id="getData" resultMap="baseResultMap">
+		select * from update_check where appType = #{deviceType, jdbcType=INTEGER} and version = #{version, jdbcType=VARCHAR}  and versionMatch = 1  order by createTime desc limit 1
+	</select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicTipoffDao">
+
+	<parameterMap id="publicTipoffParam" type="com.taiyiyun.passport.po.PublicTipoff"/>
+
+	<resultMap id="publicTipoffResult" type="com.taiyiyun.passport.po.PublicTipoff">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="userId" property="userId" jdbcType="VARCHAR"/>
+		<result column="tipoffId" property="tipoffId" jdbcType="VARCHAR"/>
+		<result column="tipoffType" property="tipoffType" jdbcType="INTEGER"/>
+		<result column="illegalType" property="illegalType" jdbcType="INTEGER"/>
+		<result column="tipoffContent" property="tipoffContent" jdbcType="VARCHAR"/>
+		<result column="tipoffTime" property="tipoffTime" jdbcType="TIMESTAMP"/>
+		<result column="feedbackCode" property="feedbackCode" jdbcType="VARCHAR"/>
+		<result column="feedbackContent" property="feedbackContent" jdbcType="VARCHAR"/>
+		<result column="feedbackTime" property="feedbackTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="tipoff_select_fields">
+		tipoff.id,
+		tipoff.userId,
+		tipoff.tipoffId,
+		tipoff.tipoffType,
+		tipoff.illegalType,
+		tipoff.tipoffContent,
+		tipoff.tipoffTime,
+		tipoff.feedbackCode,
+		tipoff.feedbackContent,
+		tipoff.feedbackTime
+	</sql>
+
+	<sql id="tipoff_insert_fields">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">userId,</if>
+			<if test="tipoffId != null">tipoffId,</if>
+			<if test="tipoffType != null">tipoffType,</if>
+			<if test="illegalType != null">illegalType,</if>
+			<if test="tipoffContent != null">tipoffContent,</if>
+			<if test="tipoffTime != null">tipoffTime,</if>
+			<if test="feedbackCode != null">feedbackCode,</if>
+			<if test="feedbackContent != null">feedbackContent,</if>
+			<if test="feedbackTime != null">feedbackTime</if>
+		</trim>
+	</sql>
+
+	<sql id="tipoff_insert_values">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+			<if test="tipoffId != null">#{tipoffId,jdbcType=VARCHAR},</if>
+			<if test="tipoffType != null">#{tipoffType,jdbcType=INTEGER},</if>
+			<if test="illegalType != null">#{illegalType,jdbcType=INTEGER},</if>
+			<if test="tipoffContent != null">#{tipoffContent,jdbcType=VARCHAR},</if>
+			<if test="tipoffTime != null">#{tipoffTime,jdbcType=TIMESTAMP},</if>
+			<if test="feedbackCode != null">#{modifyTime,jdbcType=VARCHAR}</if>
+			<if test="feedbackContent != null">#{modifyTime,jdbcType=VARCHAR}</if>
+			<if test="feedbackTime != null">#{modifyTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</sql>
+
+	<sql id="tipoff_update_set">
+		<trim prefixOverrides=",">
+			<if test="userId != null">, userId = #{userId,jdbcType=VARCHAR}</if>
+			<if test="tipoffId != null">, tipoffId = #{tipoffId,jdbcType=VARCHAR}</if>
+			<if test="tipoffType != null">, tipoffType = #{tipoffType,jdbcType=INTEGER}</if>
+			<if test="illegalType != null">, illegalType = #{illegalType,jdbcType=INTEGER}</if>
+			<if test="tipoffContent != null">, tipoffContent = #{tipoffContent,jdbcType=VARCHAR}</if>
+			<if test="tipoffTime != null">, tipoffTime = #{tipoffTime,jdbcType=TIMESTAMP}</if>
+			<if test="feedbackCode != null">, feedbackCode = #{feedbackCode,jdbcType=VARCHAR}</if>
+			<if test="feedbackContent != null">, feedbackContent = #{feedbackContent,jdbcType=VARCHAR}</if>
+			<if test="feedbackTime != null">, feedbackTime = #{feedbackTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</sql>
+
+	<sql id="tipoff_update_where_criterias">
+		<trim prefixOverrides="AND">
+			<if test="userId != null">AND userId = #{userId,jdbcType=VARCHAR}</if>
+			<if test="tipoffId != null">AND tipoffId = #{tipoffId,jdbcType=VARCHAR}</if>
+			<if test="tipoffType != null">AND tipoffType = #{tipoffType,jdbcType=INTEGER}</if>
+			<if test="illegalType != null">AND illegalType = #{illegalType,jdbcType=INTEGER}</if>
+			<if test="tipoffContent != null">AND tipoffContent = #{tipoffContent,jdbcType=VARCHAR}</if>
+			<if test="tipoffTime != null">AND tipoffTime = #{tipoffTime,jdbcType=TIMESTAMP}</if>
+			<if test="feedbackCode != null">AND feedbackCode = #{feedbackCode,jdbcType=VARCHAR}</if>
+			<if test="feedbackContent != null">AND feedbackContent = #{feedbackContent,jdbcType=VARCHAR}</if>
+			<if test="feedbackTime != null">AND feedbackTime = #{feedbackTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</sql>
+
+	<sql id="tipoff_select_where_criterias">
+		<trim prefixOverrides="AND">
+			<if test="userId != null">AND tipoff.userId = #{userId,jdbcType=VARCHAR}</if>
+			<if test="tipoffId != null">AND tipoff.tipoffId = #{tipoffId,jdbcType=VARCHAR}</if>
+			<if test="tipoffType != null">AND tipoff.tipoffType = #{tipoffType,jdbcType=INTEGER}</if>
+			<if test="illegalType != null">AND tipoff.illegalType = #{illegalType,jdbcType=INTEGER}</if>
+			<if test="tipoffContent != null">AND tipoff.tipoffContent = #{tipoffContent,jdbcType=VARCHAR}</if>
+			<if test="tipoffTime != null">AND tipoff.tipoffTime = #{tipoffTime,jdbcType=TIMESTAMP}</if>
+			<if test="feedbackCode != null">AND tipoff.feedbackCode = #{feedbackCode,jdbcType=VARCHAR}</if>
+			<if test="feedbackContent != null">AND tipoff.feedbackContent = #{feedbackContent,jdbcType=VARCHAR}</if>
+			<if test="feedbackTime != null">AND tipoff.feedbackTime = #{feedbackTime,jdbcType=TIMESTAMP}</if>
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterMap="publicTipoffParam">
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into public_tipoff
+		<include refid="tipoff_insert_fields"/>
+		values
+		<include refid="tipoff_insert_values"/>
+	</insert>
+
+	<select id="getOneByUserAndTipoffId" parameterMap="publicTipoffParam" resultMap="publicTipoffResult">
+		select <include refid="tipoff_select_fields"/>
+		from public_tipoff tipoff
+		where tipoff.userId = #{userId,jdbcType=VARCHAR}
+			and tipoff.tipoffId = #{tipoffId,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

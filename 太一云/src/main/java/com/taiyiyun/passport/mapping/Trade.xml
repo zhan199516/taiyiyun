@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ITradeDao">
+	<resultMap type="com.taiyiyun.passport.po.asset.Trade" id="baseResultMap">
+		<id column="tradeId" property="tradeId" jdbcType="BIGINT"/>
+		<result column="fromUserId" property="fromUserId" jdbcType="VARCHAR"/>
+		<result column="toUserId" property="toUserId" jdbcType="VARCHAR"/>
+		<result column="fromUuid" property="fromUuid" jdbcType="VARCHAR"/>
+		<result column="toUuid" property="toUuid" jdbcType="VARCHAR"/>
+		<result column="platformId" property="platformId" jdbcType="VARCHAR"/>
+		<result column="platformName" property="platformName" jdbcType="VARCHAR"/>
+		<result column="platformLogo" property="platformLogo" jdbcType="VARCHAR"/>
+		<result column="coinId" property="coinId" jdbcType="VARCHAR"/>
+		<result column="amount" property="amount" jdbcType="DECIMAL"/>
+		<result column="fee" property="fee" jdbcType="DECIMAL"/>
+		<result column="text" property="text" jdbcType="VARCHAR"/>
+		<result column="createTime" property="createTime" jdbcType="BIGINT"/>
+		<result column="expireTime" property="expireTime" jdbcType="BIGINT"/>
+		<result column="acceptTime" property="acceptTime" jdbcType="BIGINT"/>
+		<result column="frozenId" property="frozenId" jdbcType="BIGINT"/>
+		<result column="status" property="status" jdbcType="INTEGER"/>
+		<result column="error" property="error" jdbcType="VARCHAR"/>
+		<result column="fromOverBegin" property="fromOverBegin" jdbcType="DECIMAL"/>
+		<result column="fromOverEnd" property="fromOverEnd" jdbcType="DECIMAL"/>
+		<result column="toOverBegin" property="toOverBegin" jdbcType="DECIMAL"/>
+		<result column="toOverEnd" property="toOverEnd" jdbcType="DECIMAL"/>
+		<result column="worthRmbApply" property="worthRmbApply" jdbcType="DECIMAL"/>
+		<result column="worthRmbAccept" property="worthRmbAccept" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		trade.tradeId, trade.fromUserId, trade.fromUuid, trade.toUserId, trade.toUuid,
+		trade.platformId, trade.coinId, trade.amount, trade.fee, trade.text, trade.createTime, trade.expireTime, trade.acceptTime, trade.frozenId,
+		trade.status, trade.error, trade.fromOverBegin, trade.fromOverEnd, trade.toOverBegin, trade.toOverEnd,
+		userFrom.userName as fromUserName, userTo.userName as toUserName,
+		app.appName as platformName, app.logoUrl as platformLogo,
+		worthRmbApply, worthRmbAccept
+	</sql>
+
+	<sql id="Base_Column_ListTrade">
+		trade.tradeId, trade.fromUserId, trade.fromUuid, trade.toUserId, trade.toUuid,
+		trade.platformId, trade.coinId, trade.amount, trade.fee, trade.text, trade.createTime, trade.expireTime, trade.acceptTime, trade.frozenId,
+		trade.status, trade.error, trade.fromOverBegin, trade.fromOverEnd, trade.toOverBegin, trade.toOverEnd,
+		userFrom.userName as fromUserName, 
+		app.appName as platformName, app.logoUrl as platformLogo,
+		worthRmbApply, worthRmbAccept
+	</sql>
+
+	<insert id="saveTransApply" parameterType="com.taiyiyun.passport.po.asset.TransferAnswer" useGeneratedKeys="true" keyProperty="tradeId">
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="tradeId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into trade (
+			<trim suffixOverrides=",">
+			fromUserId,
+			toUserId,
+			fromUuid,
+			toUuid,
+			platformId,
+			coinId,
+			amount,
+			fee,
+			text,
+			createTime,
+			expireTime,
+			frozenId,
+			worthRmbApply,
+			status,
+			<if test="repeatToken != null">repeatToken</if>
+			</trim>
+
+		)
+		values (
+			<trim suffixOverrides=",">
+			#{fromUserId, jdbcType=VARCHAR},
+			#{toUserId, jdbcType=VARCHAR},
+			#{fromUuid, jdbcType=VARCHAR},
+			#{toUuid, jdbcType=VARCHAR},
+			#{platformId, jdbcType=VARCHAR},
+			#{coinId, jdbcType=VARCHAR},
+			#{amount, jdbcType=DECIMAL},
+			#{fee, jdbcType=DECIMAL},
+			#{text, jdbcType=VARCHAR},
+			#{createTime, jdbcType=BIGINT},
+			#{expireTime, jdbcType=BIGINT},
+			#{frozenId, jdbcType=BIGINT},
+			#{worthRmbApply, jdbcType=DECIMAL},
+			#{status, jdbcType=INTEGER},
+			<if test="repeatToken != null">#{repeatToken, jdbcType=VARCHAR}</if>
+			</trim>
+		)
+	</insert>
+
+	<insert id="insert" parameterType="com.taiyiyun.passport.po.asset.TransferAnswer" useGeneratedKeys="true" keyProperty="tradeId">
+		<selectKey resultType="java.lang.Long" order="AFTER" keyProperty="tradeId">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into trade (
+			fromUserId, toUserId,
+			fromUuid, toUuid,
+			platformId, coinId,
+			amount, fee, text,
+			createTime, expireTime,
+			acceptTime,frozenId,
+			worthRmbApply,status
+		)
+		values (
+			#{fromUserId, jdbcType=VARCHAR},
+			#{toUserId, jdbcType=VARCHAR},
+			#{fromUuid, jdbcType=VARCHAR},
+			#{toUuid, jdbcType=VARCHAR},
+			#{platformId, jdbcType=VARCHAR},
+			#{coinId, jdbcType=VARCHAR},
+			#{amount, jdbcType=DECIMAL},
+			#{fee, jdbcType=DECIMAL},
+			#{text, jdbcType=VARCHAR},
+			#{createTime, jdbcType=BIGINT},
+			#{expireTime, jdbcType=BIGINT},
+			#{expireTime, jdbcType=BIGINT},
+			#{frozenId, jdbcType=BIGINT},
+			#{worthRmbApply, jdbcType=DECIMAL},
+			#{status, jdbcType=INTEGER}
+		)
+	</insert>
+	
+	<select id="getByTradeId" parameterType="java.lang.Long" resultMap="baseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from trade
+		left join public_user userFrom on trade.fromUserId = userFrom.userId
+		left join public_user userTo on trade.toUserId = userTo.userId
+		left join third_app app on trade.platformId = app.appId
+		where tradeId = #{tradeId, jdbcType=BIGINT}
+	</select>
+
+	<select id="listByToken" parameterType="com.taiyiyun.passport.po.asset.Trade" resultMap="baseResultMap">
+		select trade.tradeId
+		from trade trade
+		where trade.repeatToken = #{repeatToken, jdbcType=VARCHAR}
+			  and trade.fromUserId = #{fromUserId, jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="getTradeInfoByTradeId" parameterType="java.lang.Long" resultMap="baseResultMap">
+		select
+		<include refid="Base_Column_ListTrade"/>
+		from trade
+		left join public_user userFrom on trade.fromUserId = userFrom.userId
+		left join third_app app on trade.platformId = app.appId
+		where tradeId = #{tradeId, jdbcType=BIGINT}
+	</select>
+
+
+
+	<select id="getHistory" resultMap="baseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from trade
+		left join public_user userFrom on trade.fromUserId = userFrom.userId
+		left join public_user userTo on trade.toUserId = userTo.userId
+		left join third_app app on trade.platformId = app.appId
+		WHERE 1 = 1
+		<trim >
+			<if test="start != null">AND trade.createTime &lt; #{start, jdbcType=BIGINT}</if>
+			<if test="end != null">AND trade.createTime > #{end, jdbcType=VARCHAR}</if>
+			<if test="platformId != null">AND platformId = #{platformId, jdbcType=VARCHAR}</if>
+			<if test="coinId != null">AND coinId = #{coinId, jdbcType=VARCHAR}</if>
+			<if test="userId != null and ioType == 1">AND fromUserId = #{userId, jdbcType=VARCHAR}</if>
+			<if test="userId != null and ioType == 2">AND toUserId = #{userId, jdbcType=VARCHAR}</if>
+			<if test="userId != null and ioType == 3">AND (fromUserId = #{userId, jdbcType=VARCHAR} OR toUserId = #{userId, jdbcType=VARCHAR})</if>
+		</trim>
+		order by trade.createTime desc
+		<trim>
+			<if test="line != null">limit #{line, jdbcType=INTEGER}</if>
+			<if test="line == null">limit 20</if>
+		</trim>
+	</select>
+
+	<select id="getTimeout" resultMap="baseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List"/>
+		from trade
+		left join public_user userFrom on trade.fromUserId = userFrom.userId
+		left join public_user userTo on trade.toUserId = userTo.userId
+		left join third_app app on trade.platformId = app.appId
+		WHERE <![CDATA[trade.fromUserId is not null
+		and trade.toUserId is not NULL
+		and trade.fromUserId <> trade.toUserId
+		and trade.status = 0
+		and trade.expireTime < #{aim, jdbcType=BIGINT}
+		]]>
+		limit 20
+	</select>
+
+	<update id="acceptApply" >
+		update trade
+		set status = #{status, jdbcType=INTEGER}
+		<if test="acceptTime != null">, acceptTime = #{acceptTime, jdbcType=BIGINT}</if>
+		<if test="error != null">, error = #{error, jdbcType=VARCHAR}</if>
+		<if test="fromOverBegin != null">, fromOverBegin = #{fromOverBegin, jdbcType=DECIMAL}</if>
+		<if test="fromOverEnd != null">, fromOverEnd = #{fromOverEnd, jdbcType=DECIMAL}</if>
+		<if test="toOverBegin != null">, toOverBegin = #{toOverBegin, jdbcType=DECIMAL}</if>
+		<if test="toOverEnd != null">, toOverEnd = #{toOverEnd, jdbcType=DECIMAL}</if>
+		<if test="worthRmbAccept != null">, worthRmbAccept = #{worthRmbAccept, jdbcType=DECIMAL}</if>
+		where tradeId = #{tradeId, jdbcType=BIGINT} and status = 0
+	</update>
+
+   <insert id="saveTransferInfo" parameterType="com.taiyiyun.passport.po.asset.Trade" useGeneratedKeys="true" keyProperty="tradeId">
+		insert into trade (fromUserId, toUserId, fromUuid, toUuid, platformId, coinId, amount, fee, text, createTime, 
+		expireTime, frozenId, worthRmbApply,status,fromOverBegin,fromOverEnd,toOverBegin,toOverEnd,acceptTime,error) values (
+		#{fromUserId, jdbcType=VARCHAR},
+		#{toUserId, jdbcType=VARCHAR},
+		#{fromUuid, jdbcType=VARCHAR},
+		#{toUuid, jdbcType=VARCHAR},
+		#{platformId, jdbcType=VARCHAR},
+		#{coinId, jdbcType=VARCHAR},
+		#{amount, jdbcType=DECIMAL},
+		#{fee, jdbcType=DECIMAL},
+		#{text, jdbcType=VARCHAR},
+		#{createTime, jdbcType=BIGINT},
+		#{expireTime, jdbcType=BIGINT},
+		#{frozenId, jdbcType=BIGINT},
+		#{worthRmbApply, jdbcType=DECIMAL},
+		#{status, jdbcType=INTEGER},
+		#{fromOverBegin, jdbcType=DECIMAL},
+		#{fromOverEnd, jdbcType=DECIMAL},
+		#{toOverBegin, jdbcType=DECIMAL},
+		#{toOverEnd, jdbcType=DECIMAL},
+		#{acceptTime, jdbcType=BIGINT},
+		#{error, jdbcType=BIGINT}
+		)
+	</insert>
+	<update id="updateUuid">
+		update trade set toUuid = #{toUuid, jdbcType=VARCHAR}
+		where tradeId = #{tradeId, jdbcType=BIGINT} and status = 0
+	</update>
+
+	<update id="updateFrozenId" parameterType="com.taiyiyun.passport.po.asset.Trade">
+		update trade set status = #{status, jdbcType=INTEGER}
+		where frozenId = #{frozenId, jdbcType=BIGINT} and status = 0
+	</update>
+
+</mapper>

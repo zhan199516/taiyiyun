@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleAccuseDao">
+	<resultMap type="com.taiyiyun.passport.po.PublicArticleAccuse" id="baseResultMap">
+		<id column="id" property="id" jdbcType="BIGINT"/>
+		<result column="userId" property="userId" jdbcType="VARCHAR"/>
+		<result column="targetArticleId" property="targetArticleId" jdbcType="VARCHAR"/>
+		<result column="accuseTypeId" property="accuseTypeId" jdbcType="INTEGER"/>
+		<result column="accuseDescription" property="accuseDescription" jdbcType="VARCHAR"/>
+		<result column="accuseTime" property="accuseTime" jdbcType="TIMESTAMP"/>
+		<result column="feedbackCode" property="feedbackCode" jdbcType="VARCHAR"/>
+		<result column="feedbackDescription" property="feedbackDescription" jdbcType="VARCHAR"/>
+		<result column="feedbackTime" property="feedbackTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicArticleAccuse">
+		insert into public_article_accuse 
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">userId,</if>
+			<if test="targetArticleId != null">targetArticleId,</if>
+			<if test="accuseTypeId != null">accuseTypeId,</if>
+			<if test="accuseDescription != null">accuseDescription,</if>
+			<if test="accuseTime != null">accuseTime,</if>
+			<if test="feedbackCode != null">feedbackCode,</if>
+			<if test="feedbackDescription != null">feedbackDescription,</if>
+			<if test="feedbackTime != null">feedbackTime,</if>
+		</trim>
+		select 
+		<trim suffixOverrides=",">
+			<if test="userId != null">#{userId, jdbcType=VARCHAR},</if>
+			<if test="targetArticleId != null">#{targetArticleId, jdbcType=VARCHAR},</if>
+			<if test="accuseTypeId != null">#{accuseTypeId, jdbcType=INTEGER},</if>
+			<if test="accuseDescription != null">#{accuseDescription, jdbcType=VARCHAR},</if>
+			<if test="accuseTime != null">#{accuseTime, jdbcType=TIMESTAMP},</if>
+			<if test="feedbackCode != null">#{feedbackCode, jdbcType=VARCHAR},</if>
+			<if test="feedbackDescription != null">#{feedbackDescription, jdbcType=VARCHAR},</if>
+			<if test="feedbackTime != null">#{feedbackTime, jdbcType=TIMESTAMP},</if>
+		</trim>
+		from dual where not exists (select 1 from public_article_accuse where userId = #{userId, jdbcType=VARCHAR} and targetArticleId = #{targetArticleId, jdbcType=VARCHAR})
+	</insert>
+
+</mapper>

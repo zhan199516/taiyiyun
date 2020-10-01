@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.group.IGroupDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.group.Group">
+		<id column="groupId" jdbcType="VARCHAR" property="groupId" />
+		<result column="groupName" jdbcType="VARCHAR" property="groupName" />
+		<result column="description" jdbcType="VARCHAR" property="description" />
+		<result column="groupHeader" jdbcType="VARCHAR" property="groupHeader" />
+		<result column="ownerId" jdbcType="VARCHAR" property="ownerId" />
+		<result column="inviteType" jdbcType="INTEGER" property="inviteType" />
+		<result column="modifyRight" jdbcType="INTEGER" property="modifyRight" />
+		<result column="groupType" jdbcType="INTEGER" property="groupType" />
+		<result column="groupState" jdbcType="INTEGER" property="groupState" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="needAuth" jdbcType="INTEGER" property="needAuth" />
+		<result column="isPromote" jdbcType="INTEGER" property="isPromote" />
+		<result column="inviteTypeDefault" jdbcType="INTEGER" property="inviteTypeDefault" />
+		<result column="modifyRightDefault" jdbcType="INTEGER" property="modifyRightDefault" />
+		<result column="groupTypeDefault" jdbcType="INTEGER" property="groupTypeDefault" />
+		<result column="needAuthDefault" jdbcType="INTEGER" property="needAuthDefault" />
+		<result column="updateTime" jdbcType="INTEGER" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		groupId,
+		groupName,
+		description,
+		groupHeader,
+		ownerId,
+		inviteType,
+		modifyRight,
+		groupType,
+		groupState,
+		createTime,
+		needAuth,
+		isPromote,
+		inviteTypeDefault,
+		modifyRightDefault,
+		groupTypeDefault,
+		needAuthDefault,
+		updateTime
+	</sql>
+
+	<select id="selectByPrimarykey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from public_group where groupId = #{groupId, jdbcType = VARCHAR}
+	</select>
+
+	<select id="listGroupByIds" parameterType="com.taiyiyun.passport.po.group.Group" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from public_group pgroup
+		<where>
+			<foreach collection="groupIds" open="(" close=")" item="item" index="index" separator="or">
+				pgroup.groupId = #{item, jdbcType=VARCHAR}
+			</foreach>
+		</where>
+	</select>
+
+	<select id="selectByOwnerId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from public_group where ownerId = #{ownerId, jdbcType = VARCHAR}
+		  and isPromote = 1
+	</select>
+
+	<select id="selectBySearchKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from public_group where 1 = 1 and groupState = 0 and groupType = 0
+		<if test="searchKey != null">
+			AND groupName like CONCAT('%', #{searchKey, jdbcType = VARCHAR}, '%')
+		</if>
+	</select>
+
+	<select id="selectAll" resultType="com.taiyiyun.passport.po.group.Group">
+		select * from public_group
+	</select>
+
+	<insert id="insertSelective" parameterType="com.taiyiyun.passport.po.group.Group">
+		insert into public_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				groupId,
+			</if>
+			<if test="groupName != null">
+				groupName,
+			</if>
+			<if test="description != null">
+				description,
+			</if>
+			<if test="groupHeader != null">
+				groupHeader,
+			</if>
+			<if test="ownerId != null">
+				ownerId,
+			</if>
+			<if test="inviteType != null">
+				inviteType,
+			</if>
+			<if test="modifyRight != null">
+				modifyRight,
+			</if>
+			<if test="groupType != null">
+				groupType,
+			</if>
+			<if test="groupState != null">
+				groupState,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+			<if test="needAuth != null">
+				needAuth,
+			</if>
+			<if test="isPromote != null">
+				isPromote,
+			</if>
+			<if test="inviteTypeDefault != null">
+				inviteTypeDefault,
+			</if>
+			<if test="modifyRightDefault != null">
+				modifyRightDefault,
+			</if>
+			<if test="groupTypeDefault != null">
+				groupTypeDefault,
+			</if>
+			<if test="needAuthDefault != null">
+				needAuthDefault,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="groupId != null">
+				#{groupId,jdbcType=VARCHAR},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="groupHeader != null">
+				#{groupHeader,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerId != null">
+				#{ownerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inviteType != null">
+				#{inviteType,jdbcType=INTEGER},
+			</if>
+			<if test="modifyRight != null">
+				#{modifyRight,jdbcType=INTEGER},
+			</if>
+			<if test="groupType != null">
+				#{groupType,jdbcType=INTEGER},
+			</if>
+			<if test="groupState != null">
+				#{groupState,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="needAuth != null">
+				#{needAuth,jdbcType=INTEGER},
+			</if>
+			<if test="isPromote != null">
+				#{isPromote,jdbcType=INTEGER},
+			</if>
+			<if test="inviteTypeDefault != null">
+				#{inviteTypeDefault,jdbcType=INTEGER},
+			</if>
+			<if test="modifyRightDefault != null">
+				#{modifyRightDefault,jdbcType=INTEGER},
+			</if>
+			<if test="groupTypeDefault != null">
+				#{groupTypeDefault,jdbcType=INTEGER},
+			</if>
+			<if test="needAuthDefault != null">
+				#{needAuthDefault,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		  delete from public_group
+		  where groupId = #{groupId,jdbcType=VARCHAR}
+	</delete>
+	<!-- 变更群主身份 -->
+	<update id="updateGroupOwner" parameterType="java.util.Map">
+		update public_group
+		set ownerId = #{ownerId,jdbcType=VARCHAR}
+		where groupId = #{groupId,jdbcType=VARCHAR}
+			and exists (
+				select 1 from public_group_memeber m
+				where m.groupId=#{groupId,jdbcType=VARCHAR}
+					and m.userId=#{ownerId,jdbcType=VARCHAR}
+			)
+	</update>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.taiyiyun.passport.po.group.Group">
+		update public_group
+		<set>
+			<if test="groupName != null">
+				groupName = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="groupHeader != null">
+				groupHeader = #{groupHeader,jdbcType=VARCHAR},
+			</if>
+			<if test="ownerId != null">
+				ownerId = #{ownerId,jdbcType=VARCHAR},
+			</if>
+			<if test="inviteType != null">
+				inviteType = #{inviteType,jdbcType=INTEGER},
+			</if>
+			<if test="modifyRight != null">
+				modifyRight = #{modifyRight,jdbcType=INTEGER},
+			</if>
+			<if test="groupType != null">
+				groupType = #{groupType,jdbcType=INTEGER},
+			</if>
+			<if test="groupState != null">
+				groupState = #{groupState,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="needAuth != null">
+				needAuth = #{needAuth,jdbcType=INTEGER},
+			</if>
+			<if test="inviteTypeDefault != null">
+				inviteTypeDefault = #{inviteTypeDefault,jdbcType=INTEGER},
+			</if>
+			<if test="modifyRightDefault != null">
+				modifyRightDefault = #{modifyRightDefault,jdbcType=INTEGER},
+			</if>
+			<if test="groupTypeDefault != null">
+				groupTypeDefault = #{groupTypeDefault,jdbcType=INTEGER},
+			</if>
+			<if test="needAuthDefault != null">
+				needAuthDefault = #{needAuthDefault,jdbcType=INTEGER},
+			</if>
+			<if test="updateTime != null">
+				updateTime = #{updateTime,jdbcType=INTEGER},
+			</if>
+		</set>
+		where groupId = #{groupId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

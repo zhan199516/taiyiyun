@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleStatisticDao">
+
+	<resultMap id="baseMap" type="com.taiyiyun.passport.po.PublicArticleStatistic">
+		<result column="articleId" property="articleId" jdbcType="VARCHAR"/>
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="readCount" property="readCount" jdbcType="INTEGER" />
+		<result column="upCount" property="upCount" jdbcType="INTEGER" />
+		<result column="downCount" property="downCount" jdbcType="INTEGER" />
+		<result column="forwardCount" property="forwardCount" jdbcType="INTEGER" />
+		<result column="replyCount" property="replyCount" jdbcType="INTEGER" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		articleId, userId, readCount, upCount, downCount, forwardCount, replyCount, createTime
+	</sql>
+
+	<select id="getByTowId" resultMap="baseMap" parameterType="java.lang.String">
+		select
+			stat.articleId, stat.userId, stat.readCount, stat.upCount, stat.downCount, stat.forwardCount, stat.replyCount, stat.createTime
+		from public_article_statistic stat, public_article article where article.articleId = stat.articleId and article.onlineStatus = 2 
+		<if test="articleId != null">AND stat.articleId = #{articleId, jdbcType=VARCHAR}</if>
+		<if test="userId != null">AND stat.userId = #{userId, jdbcType=VARCHAR}</if>
+
+	</select>
+	
+	<insert id="insertStatistic">
+		insert ignore into public_article_statistic(articleId, userId, createTime)
+		select public_article.articleId, public_article.userId, '2000-01-01' from public_article left join public_article_statistic on public_article.articleId = public_article_statistic.articleId
+		where  public_article_statistic.articleId is null
+		<trim>
+			<if test="articleId != null">AND public_article.articleId = #{articleId, jdbcType=VARCHAR}</if>
+			<if test="userId != null">AND public_article.userId = #{userId, jdbcType=VARCHAR}</if>
+		</trim>
+	</insert>
+
+	<!--每30秒更新一下-->
+	<insert id="updateStatistic" parameterType="java.lang.String">
+		replace into public_article_statistic(articleId, userId, readCount, replyCount, upCount, downCount, forwardCount)
+		select stat.articleId, stat.userId, ifnull(public_article_read.readCount, 0), count(distinct replyId),
+		count(distinct case when likeLevel = 1 then levelId else null end),
+		count(distinct case when likeLevel = 2 then levelId else null end),
+		count(distinct forwardId)
+		from public_article_statistic stat
+		left join public_article_read on stat.articleId = public_article_read.articleId
+		left join public_article_reply on stat.articleId = public_article_reply.articleId and public_article_reply.deleteStatus = 0
+		left join public_article_level on stat.articleId = public_article_level.articleId
+		left join public_article_forward on stat.articleId = public_article_forward.articleId
+		where stat.createTime &lt; timestamp(now(), '-00:00:02')
+		<trim>
+			<if test="articleId != null">AND stat.articleId = #{articleId, jdbcType=VARCHAR}</if>
+			<if test="userId != null">AND stat.userId = #{userId, jdbcType=VARCHAR}</if>
+		</trim>
+		group by stat.articleId, stat.userId
+	</insert>
+
+	<select id="getArticleStatistic"  parameterType="java.lang.String" resultType="java.lang.Long">
+		select count(articleId) from public_article where userId = #{userId, jdbcType=VARCHAR} and onlineStatus = 2
+	</select>
+
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicInvitationDeliveryAddressDao">
+
+    <parameterMap id="publicInvitationDeliveryAddressParam" type="com.taiyiyun.passport.po.PublicInvitationDeliveryAddress"/>
+     <resultMap id="publicInvitationDeliveryAddressResult" type="com.taiyiyun.passport.po.PublicInvitationDeliveryAddress">
+        <id column="addressId" property="addressId" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="address_insert_fields">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="addressId != null">addressId,</if>
+          <if test="invitationId != null">invitationId,</if>
+          <if test="invitationUserId != null">invitationUserId,</if>
+          <if test="mobile != null">mobile,</if>
+          <if test="userName != null">userName,</if>
+          <if test="userAddress != null">userAddress,</if>
+          <if test="deliveryStatus != null">deliveryStatus,</if>
+          <if test="createTime != null">createTime,</if>
+          <if test="upateTime != null">upateTime</if>
+        </trim>
+    </sql>
+
+	<sql id="address_insert_values">
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		    <if test="addressId != null">#{addressId,jdbcType=VARCHAR},</if>
+			<if test="invitationId != null">#{invitationId,jdbcType=VARCHAR},</if>
+			<if test="invitationUserId != null">#{invitationUserId,jdbcType=VARCHAR},</if>
+			<if test="mobile != null">#{mobile,jdbcType=VARCHAR},</if>
+			<if test="userName != null">#{userName,jdbcType=VARCHAR},</if>
+			<if test="userAddress != null">#{userAddress,jdbcType=VARCHAR},</if>
+			<if test="deliveryStatus != null">#{deliveryStatus,jdbcType=INTEGER},</if>
+			<if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="upateTime != null">#{upateTime,jdbcType=TIMESTAMP}</if>
+
+		</trim>
+	</sql>
+
+	<insert id="insert" parameterMap="publicInvitationDeliveryAddressParam">
+        <selectKey keyProperty="addressId" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+	    insert into public_invitation_delivery_address
+        <include refid="address_insert_fields"/>
+        values
+        <include refid="address_insert_values"/>
+	</insert>
+	
+	<select id="listByUserId" parameterMap="publicInvitationDeliveryAddressParam" resultMap="publicInvitationDeliveryAddressResult">
+        select addressId
+        from public_invitation_delivery_address  
+        where invitationId = #{invitationId,jdbcType=VARCHAR}  and invitationUserId = #{invitationUserId,jdbcType=VARCHAR}  and  mobile = #{mobile,jdbcType=VARCHAR}  LIMIT 1
+    </select>
+
+</mapper>

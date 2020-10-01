@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicRedPacketDetailDao">
+
+    <parameterMap id="publicRedPacketDetailParam" type="com.taiyiyun.passport.po.PublicRedPacketDetail"/>
+
+    <resultMap id="publicRedPacketDetailResult" type="com.taiyiyun.passport.po.PublicRedPacketDetail">
+        <id column="detailId" property="detailId" jdbcType="VARCHAR" />
+        <id column="packId" property="packId" jdbcType="VARCHAR" />
+        <result column="tradeId" property="tradeId" jdbcType="INTEGER" />
+        <result column="fromUserId" property="fromUserId" jdbcType="VARCHAR" />
+        <result column="toUserId" property="toUserId" jdbcType="VARCHAR" />
+        <result column="toUuid" property="toUuid" jdbcType="VARCHAR" />
+        <result column="coinId" property="coinId" jdbcType="VARCHAR" />
+        <result column="sessionType" property="sessionType" jdbcType="INTEGER" />
+        <result column="sessionId" property="sessionId" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="VARCHAR" />
+        <result column="exchangeRate" property="exchangeRate" jdbcType="VARCHAR" />
+        <result column="cashAmount" property="cashAmount" jdbcType="INTEGER" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="exchangeRate" property="exchangeRate" jdbcType="DECIMAL" />
+        <result column="cashAmount" property="cashAmount" jdbcType="DECIMAL" />
+        <result column="fee" property="fee" jdbcType="DECIMAL" />
+        <result column="freezeTradeId" property="freezeTradeId" jdbcType="INTEGER" />
+        <result column="unfreezeStatus" property="unfreezeStatus" jdbcType="INTEGER" />
+        <result column="unfreezeTime" property="unfreezeTime" jdbcType="TIMESTAMP" />
+        <result column="clearTradeId" property="clearTradeId" jdbcType="INTEGER" />
+        <result column="receiveTime" property="receiveTime" jdbcType="TIMESTAMP" />
+        <result column="transferStatus" property="transferStatus" jdbcType="INTEGER" />
+        <result column="transferTime" property="transferTime" jdbcType="TIMESTAMP" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="grabedAmount" property="grabedAmount" jdbcType="DECIMAL" />
+        <result column="grabedCount" property="grabedCount" jdbcType="INTEGER" />
+        <result column="userName" property="userName" jdbcType="VARCHAR" />
+        <result column="nikeName" property="nikeName" jdbcType="VARCHAR" />
+        <result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+        <result column="recordTimestamp" property="recordTimestamp" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="redpacketDetail_select_fields">
+       redpacketDetail.detailId,
+       redpacketDetail.packId,
+       redpacketDetail.tradeId,
+       redpacketDetail.fromUserId,
+       redpacketDetail.toUserId,
+       redpacketDetail.coinId,
+       redpacketDetail.sessionType,
+       redpacketDetail.sessionId,
+       redpacketDetail.amount,
+       redpacketDetail.exchangeRate,
+       redpacketDetail.cashAmount,
+       redpacketDetail.fee,
+       redpacketDetail.isBest,
+       redpacketDetail.clearTradeId,
+       redpacketDetail.freezeTradeId,
+       redpacketDetail.unfreezeStatus,
+       redpacketDetail.unfreezeTime,
+       redpacketDetail.receiveTime,
+       redpacketDetail.transferStatus,
+       redpacketDetail.transferTime,
+       redpacketDetail.createTime,
+       redpacketDetail.recordTimestamp
+    </sql>
+
+    <sql id="redpacketDetail_insert_fields">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="detailId != null">detailId,</if>
+            <if test="packId != null">packId,</if>
+            <if test="tradeId != null">tradeId,</if>
+            <if test="fromUserId != null">fromUserId,</if>
+            <if test="toUserId != null">toUserId,</if>
+            <if test="coinId != null">coinId,</if>
+            <if test="sessionType != null">sessionType,</if>
+            <if test="sessionId != null">sessionId,</if>
+            <if test="amount != null">amount,</if>
+            <if test="exchangeRate != null">exchangeRate,</if>
+            <if test="cashAmount != null">cashAmount,</if>
+            <if test="fee != null">fee,</if>
+            <if test="isBest != null">isBest,</if>
+            <if test="clearTradeId != null">clearTradeId,</if>
+            <if test="freezeTradeId != null">freezeTradeId,</if>
+            <if test="unfreezeStatus != null">unfreezeStatus,</if>
+            <if test="unfreezeTime != null">unfreezeTime,</if>
+            <if test="receiveTime != null">receiveTime,</if>
+            <if test="transferStatus != null">transferStatus,</if>
+            <if test="transferTime != null">transferTime,</if>
+            <if test="createTime != null">createTime</if>
+            <if test="recordTimestamp != null">recordTimestamp</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacketDetail_insert_values">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="detailId != null">#{detailId,jdbcType=VARCHAR},</if>
+            <if test="packId != null">#{packId,jdbcType=VARCHAR},</if>
+            <if test="tradeId != null">#{tradeId,jdbcType=INTEGER},</if>
+            <if test="fromUserId != null">#{fromUserId,jdbcType=VARCHAR},</if>
+            <if test="toUserId != null">#{toUserId,jdbcType=VARCHAR},</if>
+            <if test="coinId != null">#{coinId,jdbcType=VARCHAR},</if>
+            <if test="sessionType != null">#{sessionType,jdbcType=INTEGER},</if>
+            <if test="sessionId != null">#{sessionId,jdbcType=VARCHAR},</if>
+            <if test="amount != null">#{amount,jdbcType=VARCHAR},</if>
+            <if test="exchangeRate != null">#{exchangeRate,jdbcType=VARCHAR},</if>
+            <if test="cashAmount != null">#{cashAmount,jdbcType=DECIMAL},</if>
+            <if test="fee != null">#{fee,jdbcType=DECIMAL},</if>
+            <if test="isBest != null">#{isBest,jdbcType=INTEGER},</if>
+            <if test="freezeTradeId != null">#{freezeTradeId,jdbcType=INTEGER},</if>
+            <if test="unfreezeStatus != null">#{unfreezeStatus,jdbcType=INTEGER},</if>
+            <if test="unfreezeTime != null">#{unfreezeTime,jdbcType=INTEGER},</if>
+            <if test="clearTradeId != null">#{clearTradeId,jdbcType=INTEGER},</if>
+            <if test="receiveTime != null">#{receiveTime,jdbcType=TIMESTAMP},</if>
+            <if test="transferStatus != null">#{transferStatus,jdbcType=INTEGER},</if>
+            <if test="transferTime != null">#{transferTime,jdbcType=TIMESTAMP},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="recordTimestamp != null">#{recordTimestamp,jdbcType=BIGINT}</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacketDetail_update_set">
+        <trim prefixOverrides=",">
+            <if test="packId != null">, packId = #{packId,jdbcType=VARCHAR}</if>
+            <if test="tradeId != null">, tradeId = #{tradeId,jdbcType=INTEGER}</if>
+            <if test="fromUserId != null">, fromUserId = #{fromUserId,jdbcType=VARCHAR}</if>
+            <if test="toUserId != null">, toUserId = #{toUserId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">, coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="sessionType != null">, sessionType = #{sessionType,jdbcType=INTEGER}</if>
+            <if test="sessionId != null">, sessionId = #{sessionId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">, amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="exchangeRate != null">, exchangeRate = #{exchangeRate,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">, cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="fee != null">, fee = #{fee,jdbcType=DECIMAL}</if>
+            <if test="freezeTradeId != null">, freezeTradeId = #{freezeTradeId,jdbcType=INTEGER}</if>
+            <if test="unfreezeStatus != null">, unfreezeStatus = #{unfreezeStatus,jdbcType=INTEGER}</if>
+            <if test="unfreezeTime != null">, unfreezeTime = #{unfreezeTime,jdbcType=VARCHAR}</if>
+            <if test="clearTradeId != null">, clearTradeId = #{clearTradeId,jdbcType=INTEGER}</if>
+            <if test="receiveTime != null">, receiveTime = #{receiveTime,jdbcType=TIMESTAMP}</if>
+            <if test="transferStatus != null">, transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">, transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">, createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="recordTimestamp != null">, recordTimestamp = #{recordTimestamp,jdbcType=BIGINT}</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacketDetail_update_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="detailId != null">AND detailId = #{detailId,jdbcType=VARCHAR}</if>
+            <if test="packId != null">AND packId = #{packId,jdbcType=VARCHAR}</if>
+            <if test="fromUserId != null">AND fromUserId = #{fromUserId,jdbcType=VARCHAR}</if>
+            <if test="toUserId != null">AND toUserId = #{toUserId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="sessionType != null">AND sessionType = #{sessionType,jdbcType=INTEGER}</if>
+            <if test="sessionId != null">AND sessionId = #{sessionId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="exchangeRate != null">AND exchangeRate = #{exchangeRate,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">AND cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="fee != null">AND fee = #{fee,jdbcType=DECIMAL}</if>
+            <if test="clearTradeId != null">AND clearTradeId = #{clearTradeId,jdbcType=INTEGER}</if>
+            <if test="freezeTradeId != null">AND freezeTradeId = #{clearTradeId,jdbcType=INTEGER}</if>
+            <if test="unfreezeStatus != null">AND unfreezeStatus = #{unfreezeStatus,jdbcType=INTEGER}</if>
+            <if test="unfreezeTime != null">AND unfreezeTime = #{unfreezeTime,jdbcType=TIMESTAMP}</if>
+            <if test="receiveTime != null">AND receiveTime = #{receiveTime,jdbcType=TIMESTAMP}</if>
+            <if test="transferStatus != null">AND transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">AND transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="recordTimestamp != null">AND recordTimestamp = #{recordTimestamp,jdbcType=BIGINT}</if>
+        </trim>
+    </sql>
+    
+     <sql id="redpacketDetail_update_wherecriterias">
+        <trim prefixOverrides="AND">
+            <if test="detailId != null">AND detailId = #{detailId,jdbcType=VARCHAR}</if>
+            <if test="packId != null">AND packId = #{packId,jdbcType=VARCHAR}</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacketDetail_select_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="detailId != null">AND redpacketDetail.detailId = #{detailId,jdbcType=VARCHAR}</if>
+            <if test="packId != null">AND redpacketDetail.packId = #{packId,jdbcType=VARCHAR}</if>
+            <if test="fromUserId != null">AND redpacketDetail.fromUserId = #{fromUserId,jdbcType=VARCHAR}</if>
+            <if test="toUserId != null">AND redpacketDetail.toUserId = #{toUserId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND redpacketDetail.coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="sessionType != null">AND redpacketDetail.sessionType = #{sessionType,jdbcType=INTEGER}</if>
+            <if test="sessionId != null">AND redpacketDetail.sessionId = #{sessionId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND redpacketDetail.amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="exchangeRate != null">AND redpacketDetail.exchangeRate = #{exchangeRate,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">AND redpacketDetail.cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="fee != null">AND redpacketDetail.fee = #{fee,jdbcType=DECIMAL}</if>
+            <if test="clearTradeId != null">AND redpacketDetail.clearTradeId = #{clearTradeId,jdbcType=VARCHAR}</if>
+            <if test="freezeTradeId != null">AND redpacketDetail.freezeTradeId = #{freezeTradeId,jdbcType=INTEGER}</if>
+            <if test="unfreezeStatus != null">AND redpacketDetail.unfreezeStatus = #{unfreezeStatus,jdbcType=INTEGER}</if>
+            <if test="unfreezeTime != null">AND redpacketDetail.unfreezeTime = #{unfreezeTime,jdbcType=TIMESTAMP}</if>
+            <if test="receiveTime != null">AND redpacketDetail.receiveTime = #{receiveTime,jdbcType=TIMESTAMP}</if>
+            <if test="transferStatus != null">AND redpacketDetail.transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">AND redpacketDetail.transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND redpacketDetail.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+            <if test="recordTimestamp != null">AND redpacketDetail.recordTimestamp = #{recordTimestamp,jdbcType=BIGINT}</if>
+        </trim>
+    </sql>
+
+
+    <sql id="redpacketDetail_where_update_criterias">
+        <trim prefixOverrides="AND">
+            <if test="detailId != null">AND redpacket.detailId = #{detailId,jdbcType=VARCHAR}</if>
+            <if test="packId != null">AND redpacket.packId = #{packId,jdbcType=VARCHAR}</if>
+        </trim>
+    </sql>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into public_redpacket_detail(
+            detailId,
+            packId,
+            tradeId,
+            fromUserId,
+            toUserId,
+            coinId,
+            sessionType,
+            sessionId,
+            amount,
+            exchangeRate,
+            cashAmount,
+            fee,
+            isBest,
+            freezeTradeId,
+            unfreezeStatus,
+            unfreezeTime,
+            receiveTime,
+            transferStatus,
+            transferTime,
+            createTime,
+            recordTimestamp
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+        (
+          #{item.detailId,jdbcType=VARCHAR},
+          #{item.packId,jdbcType=VARCHAR},
+          #{item.tradeId,jdbcType=INTEGER},
+          #{item.fromUserId,jdbcType=VARCHAR},
+          #{item.toUserId,jdbcType=VARCHAR},
+          #{item.coinId,jdbcType=VARCHAR},
+          #{item.sessionType,jdbcType=INTEGER},
+          #{item.sessionId,jdbcType=VARCHAR},
+          #{item.amount,jdbcType=VARCHAR},
+          #{item.exchangeRate,jdbcType=VARCHAR},
+          #{item.cashAmount,jdbcType=DECIMAL},
+          #{item.fee,jdbcType=DECIMAL},
+          #{item.isBest,jdbcType=INTEGER},
+          #{item.freezeTradeId,jdbcType=INTEGER},
+          #{item.unfreezeStatus,jdbcType=INTEGER},
+          #{item.unfreezeTime,jdbcType=INTEGER},
+          #{item.receiveTime,jdbcType=TIMESTAMP},
+          #{item.transferStatus,jdbcType=INTEGER},
+          #{item.transferTime,jdbcType=TIMESTAMP},
+          #{item.createTime,jdbcType=TIMESTAMP},
+          #{item.recordTimestamp,jdbcType=BIGINT}
+        )
+        </foreach>
+    </insert>
+
+    <insert id="insert" parameterMap="publicRedPacketDetailParam">
+        <selectKey keyProperty="detailId" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual
+        </selectKey>
+        insert into public_redpacket_detail
+        <include refid="redpacketDetail_insert_fields"/>
+        values
+        <include refid="redpacketDetail_insert_values"/>
+    </insert>
+
+    <update id="update" parameterMap="publicRedPacketDetailParam">
+        update public_redpacket_detail
+        set <include refid="redpacketDetail_update_set"/>
+        <where>
+        <include refid="redpacketDetail_update_where_criterias"/>
+        </where>
+    </update>
+    
+    
+     <update id="updateRedPacketDetail" parameterMap="publicRedPacketDetailParam">
+        update public_redpacket_detail
+        set <include refid="redpacketDetail_update_set"/>
+        <where>
+         <include refid="redpacketDetail_update_wherecriterias"/>
+        </where>
+    </update>
+
+    <update id="updateById" parameterMap="publicRedPacketDetailParam">
+        update public_redpacket_detail
+        set <include refid="redpacketDetail_update_set"/>
+        where detailId = #{detailId,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete public_redpacket_detail
+        where packId = #{packId,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="listPage" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_insert_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where <include refid="redpacketDetail_select_where_criterias"/>
+        limit ${start},${offset}
+    </select>
+
+    <select id="listRedpacketToUserPage" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select
+          <include refid="redpacketDetail_select_fields"/>
+          ,redpacket.packType packType,puser.userName,puser.avatarUrl
+        from public_redpacket_detail redpacketDetail
+        inner join public_redpacket redpacket on redpacket.packId=redpacketDetail.packId
+        left join public_user puser on puser.userId=redpacketDetail.toUserId
+        where redpacketDetail.packId = #{packId,jdbcType=VARCHAR}
+        and redpacketDetail.toUserId is not null
+        <if test="recordTimestamp != null">
+            and <![CDATA[redpacketDetail.recordTimestamp<#{recordTimestamp,jdbcType=BIGINT}]]>
+        </if>
+        order by redpacketDetail.recordTimestamp DESC
+        limit ${offset}
+    </select>
+
+    <select id="listRedpacketFromUserPage" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select
+        <include refid="redpacketDetail_select_fields"/>
+        ,redpacket.packType packType,puser.userName,puser.avatarUrl
+        from public_redpacket_detail redpacketDetail
+        inner join public_redpacket redpacket on redpacket.packId=redpacketDetail.packId
+        left join public_user puser on puser.userId=redpacketDetail.fromUserId
+        where redpacketDetail.toUserId = #{toUserId,jdbcType=VARCHAR}
+        <if test="recordTimestamp != null">
+            and <![CDATA[redpacketDetail.recordTimestamp<#{recordTimestamp,jdbcType=BIGINT}]]>
+        </if>
+        order by redpacketDetail.recordTimestamp DESC
+        limit ${offset}
+    </select>
+
+    <select id="list" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        <where>
+        <include refid="redpacketDetail_select_where_criterias"/>
+        </where>
+    </select>
+
+    <select id="getOneById" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where packId = #{packId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getOneByPackAndUserId" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where redpacketDetail.packId = #{packId,jdbcType=VARCHAR}
+              and redpacketDetail.toUserId = #{toUserId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getLastOneGrabed" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where packId = #{packId,jdbcType=VARCHAR}
+        order by redpacketDetail.receiveTime DESC
+        limit  0,1
+    </select>
+
+    <select id="getSumAndCountByPackId" parameterType="java.lang.String" resultMap="publicRedPacketDetailResult">
+        select sum(cashAmount) grabedCashAmount,sum(amount) grabedAmount,count(*) grabedCount
+        from public_redpacket_detail
+        where packId = #{packId,jdbcType=VARCHAR}
+          and toUserId is not null
+    </select>
+
+    <select id="getSumAndCountByToUserId" parameterType="java.lang.String" resultMap="publicRedPacketDetailResult">
+        select sum(cashAmount) grabedCashAmount,sum(amount) grabedAmount,count(*) grabedCount
+        from public_redpacket_detail
+        where toUserId = #{toUserId,jdbcType=VARCHAR}
+        order by receiveTime desc
+    </select>
+
+    <select id="listByRedpacketId" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where packId = #{packId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="listByPackIdAndStatus" parameterType="java.lang.String" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where redpacketDetail.packId = #{packId,jdbcType=VARCHAR}
+          and redpacketDetail.transferStatus=0
+          and redpacketDetail.unfreezeStatus=0
+          and redpacketDetail.toUserId is null
+    </select>
+
+    <select id="listGrabByStatus" parameterMap="publicRedPacketDetailParam" resultType="java.lang.String">
+        select redpacketDetail.packId
+        from public_redpacket_detail redpacketDetail
+        where redpacketDetail.transferStatus=0
+        and redpacketDetail.unfreezeStatus=0
+        and redpacketDetail.toUserId is not null
+        <![CDATA[
+        and UNIX_TIMESTAMP(redpacketDetail.receiveTime) < UNIX_TIMESTAMP(#{receiveTime,jdbcType=TIMESTAMP})
+        ]]>
+        group by redpacketDetail.packId
+    </select>
+
+    <select id="listGrabByPackIdAndStatus" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        from public_redpacket_detail redpacketDetail
+        where redpacketDetail.packId = #{packId,jdbcType=VARCHAR}
+        and redpacketDetail.transferStatus=0
+        and redpacketDetail.unfreezeStatus=0
+        and redpacketDetail.toUserId is not null
+        <![CDATA[
+        and UNIX_TIMESTAMP(redpacketDetail.receiveTime) < UNIX_TIMESTAMP(#{receiveTime,jdbcType=TIMESTAMP})
+        ]]>
+    </select>
+
+    <select id="listGrabByBindStatus" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        ,bind.appId platformId,puser.uuid toUuid
+        from public_redpacket_detail redpacketDetail
+        inner join public_user puser on redpacketDetail.toUserId=puser.userId
+        left join third_app_coin_bind bind on bind.uuid=puser.uuid
+        where redpacketDetail.transferStatus=0
+        and redpacketDetail.unfreezeStatus=0
+        and redpacketDetail.toUserId is not null
+        and bind.bindStatus=1
+    </select>
+
+    <select id="listGrabByTransferStatus" resultMap="publicRedPacketDetailResult">
+        select <include refid="redpacketDetail_select_fields"/>
+        ,bind.appId platformId,puser.uuid toUuid
+        from public_redpacket_detail redpacketDetail
+        inner join public_user puser on redpacketDetail.toUserId=puser.userId
+        left join third_app_coin_bind bind on bind.uuid=puser.uuid
+        where redpacketDetail.transferStatus=2
+        and redpacketDetail.unfreezeStatus=2
+        and redpacketDetail.toUserId is not null
+        and bind.bindStatus=1
+    </select>
+
+    <select id="getSumByPackIdAndStatus" parameterType="java.lang.String" resultMap="publicRedPacketDetailResult">
+        select sum(cashAmount) grabedCashAmount,sum(amount) grabedAmount,sum(fee) feeAmount,count(*) grabedCount
+        from public_redpacket_detail
+        where packId = #{packId,jdbcType=VARCHAR}
+          and transferStatus=0
+          and unfreezeStatus=1
+          and toUserId is null
+    </select>
+
+    <select id="getGrabSumByPackIdAndStatus" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select sum(cashAmount) grabedCashAmount,sum(amount) grabedAmount,sum(fee) feeAmount,count(*) grabedCount
+        from public_redpacket_detail
+        where packId = #{packId,jdbcType=VARCHAR}
+        and transferStatus=0
+        and unfreezeStatus=1
+        and toUserId is not null
+        <![CDATA[
+        and UNIX_TIMESTAMP(receiveTime) < UNIX_TIMESTAMP(#{receiveTime,jdbcType=TIMESTAMP})
+        ]]>
+    </select>
+
+    <select id="listGrabedRedpacket" parameterMap="publicRedPacketDetailParam" resultMap="publicRedPacketDetailResult">
+        select
+        <include refid="redpacketDetail_select_fields"/>
+        ,redpacket.platformId,redpacket.expireTime,puser.uuid fromUuid
+        from public_redpacket_detail redpacketDetail
+        inner join public_redpacket redpacket on redpacket.packId=redpacketDetail.packId
+        left join public_user puser on puser.userId=redpacketDetail.fromUserId
+        where <![CDATA[UNIX_TIMESTAMP(redpacketDetail.receiveTime) > UNIX_TIMESTAMP(#{receiveTime,jdbcType=TIMESTAMP})
+          and redpacketDetail.toUserId = #{toUserId,jdbcType=VARCHAR}
+          and redpacketDetail.transferStatus = #{transferStatus,jdbcType=VARCHAR}
+          and redpacketDetail.unfreezeStatus = #{unfreezeStatus,jdbcType=VARCHAR}
+          ]]>
+    </select>
+
+</mapper>

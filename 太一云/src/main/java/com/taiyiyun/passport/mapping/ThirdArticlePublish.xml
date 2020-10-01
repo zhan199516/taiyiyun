@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IThirdArticlePublishDao">
+	<resultMap type="com.taiyiyun.passport.po.ThirdArticlePublish" id="baseResultMap">
+		<id column="appId" property="appId" jdbcType="VARCHAR"/>
+		<result column="appKey" property="appKey" jdbcType="VARCHAR"/>
+		<result column="appSecret" property="appSecret" jdbcType="VARCHAR"/>
+		<result column="remark" property="remark" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="getByAppKey" resultMap="baseResultMap" parameterType="java.lang.String">
+		select appId, appKey, appSecret, remark
+		from third_article_publish where appKey = #{appKey, jdbcType=VARCHAR}
+	</select>
+
+</mapper>

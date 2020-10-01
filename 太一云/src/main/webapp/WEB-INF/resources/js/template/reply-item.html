@@ -1,0 +1,22 @@
+<div>
+    <div class="comment-box pad-top10 clear">
+        <img-dom :img-path="item.userPicture" default-path="img/head.png" ></img-dom>
+        <div class="comment-content left" :style="{width: commentWidth}">
+            <div class="name-time clear">
+                <div class="left" v-text="item.userName"></div>
+                <div class="right" v-text="createTimeFormat">12:34:05</div>
+            </div>
+            <div class="write-content clear">
+                <div v-for="s in comments" v-text="s"></div>
+                <div>
+                    <span class="right delete" v-if="canDelete" @click="deleteMe">删除</span>
+                </div>
+            </div>
+            <div>
+                <reply-subitem v-for="rpl in item.replies" v-bind:item="rpl" v-bind:viewer-id="viewerId" v-bind:own-article="ownArticle" v-bind:owner-id="ownerId" v-on:delete-me="deleteItem"></reply-subitem>
+            </div>
+            <div><span class="reply-btn right" v-if="canReply" @click="reply">回复</span></div>
+            <div></div>
+        </div>
+    </div>
+</div>
