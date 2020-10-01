@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicArticle">
+		<id column="articleId" property="articleId" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="publishTime" property="publishTime" jdbcType="TIMESTAMP" />
+		<result column="updateTime" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="chainAddress" property="chainAddress" jdbcType="VARCHAR" />
+		<result column="chainTime" property="chainTime" jdbcType="VARCHAR" />
+		<result column="contentType" property="contentType" jdbcType="VARCHAR" />
+		<result column="isOriginal" property="isOriginal" jdbcType="INTEGER" />
+		<result column="thumbImg" property="thumbImg" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="onlineStatus" property="onlineStatus" jdbcType="SMALLINT" />
+		<result column="summary" property="summary" jdbcType="VARCHAR" />
+		<result column="registerNo" property="registerNo" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="userAvatarUrl" jdbcType="VARCHAR" />
+		<result column="articleHash" property="articleHash" jdbcType="VARCHAR" />
+		<result column="forwardFrom" property="forwardFrom" jdbcType="VARCHAR" />
+		<result column="clientId" property="clientId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap type="com.taiyiyun.passport.bean.CustomBean" id="customMap">
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="value" property="value" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		articleId, userId, title, publishTime, updateTime, chainAddress,
+		chainTime, contentType, isOriginal, thumbImg, content, onlineStatus, summary, 
+		articleHash,registerNo,forwardFrom, clientId
+	</sql>
+
+	<sql id="Rich_Column_List">
+		articleId, public_article.userId, title, publishTime, updateTime, chainAddress,
+		chainTime, contentType, isOriginal, thumbImg, content, onlineStatus, summary,
+		articleHash, registerNo, forwardFrom, clientId,
+		public_user.userName, thumbAvatarUrl
+	</sql>
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from public_article
+		where articleId = #{articleId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from public_article
+		where userId = #{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getRichById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Rich_Column_List"/>
+		from public_article left join public_user on public_article.userId = public_user.userId
+		where articleId = #{articleId,jdbcType=VARCHAR} and onlineStatus in (2, 4)
+	</select>
+
+	<select id="getMessagesByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Rich_Column_List" />
+		from public_article left join public_user on public_article.userId = public_user.userId
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="articleId != null">AND articleId=#{articleId, jdbcType=VARCHAR}</if>
+			<if test="userId != null">AND public_article.userId=#{userId, jdbcType=VARCHAR}</if>
+			<if test="start != null">AND publishTime &lt; #{start, jdbcType=TIMESTAMP}</if>
+			<if test="end != null">AND publishTime > #{end, jdbcType=TIMESTAMP}</if>
+			<if test="onlineStatus != null">AND onlineStatus = #{onlineStatus, jdbcType=SMALLINT}</if>
+			<if test="onlineContain != null">AND onlineStatus in #{onlineStatus, jdbcType=VARCHAR}</if>
+			<if test="onlineStatus == null and onlineContain == null ">AND onlineStatus in (2, 4)</if>
+			<if test="isOriginal != null">AND isOriginal = #{isOriginal, jdbcType=INTEGER}</if>
+		</trim>
+		order by updateTime desc
+		<trim>
+			<if test="limit == null">limit 100</if>
+			<if test="limit != null">limit #{limit, jdbcType=INTEGER}</if>
+		</trim>
+	</select>
+
+	<select id="getHotMessage" resultMap="BaseResultMap" >
+		select
+		<include refid="Rich_Column_List"/>
+		from public_article left join public_user on public_article.userId = public_user.userId
+		where public_article.onlineStatus in (2)
+
+		<choose>
+			<when test="key != null">
+			    AND public_article.summary like CONCAT('%', #{key, jdbcType=VARCHAR}, '%')
+			</when>
+			<otherwise>
+				AND public_article.barrier = 0 and public_user.barrier = 0
+			</otherwise>
+		</choose>
+
+		order by public_article.updateTime desc
+		limit 100
+	</select>
+
+	<!--保存之前执行的数据（去除置顶）-->
+	<update id="saveBefore" parameterType="com.taiyiyun.passport.po.PublicArticle">
+		update public_article set topLevel = 0 where userId = #{userId,jdbcType=VARCHAR} and topLevel > 0
+	</update>
+
+
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicArticle">
+		insert into public_article
+		<selectKey keyProperty="articleId" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual 
+        </selectKey>
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="articleId != null">articleId,</if>
+			<if test="userId != null">userId,</if>
+			<if test="title != null">title,</if>
+			<if test="publishTime != null">publishTime,</if>
+			<if test="updateTime != null">updateTime,</if>
+			<if test="chainAddress != null">chainAddress,</if>
+			<if test="chainTime != null">chainTime,</if>
+			<if test="contentType != null">contentType,</if>
+			<if test="isOriginal != null">isOriginal,</if>
+			<if test="thumbImg != null">thumbImg,</if>
+			<if test="content != null">content,</if>
+			<if test="summary != null">summary,</if>
+			<if test="articleHash != null">articleHash,</if>
+			<if test="onlineStatus != null">onlineStatus,</if>
+			<if test="registerNo != null">registerNo,</if>
+			<if test="forwardFrom != null">forwardFrom,</if>
+			<if test="clientId != null">clientId,</if>
+			<if test="topLevel != null">topLevel,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="articleId != null">#{articleId,jdbcType=VARCHAR},</if>
+			<if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+			<if test="title != null">#{title,jdbcType=VARCHAR},</if>
+			<if test="publishTime != null">#{publishTime,jdbcType=TIMESTAMP},</if>
+			<if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+			<if test="chainAddress != null">#{chainAddress,jdbcType=VARCHAR},</if>
+			<if test="chainTime != null">#{chainTime,jdbcType=TIMESTAMP},</if>
+			<if test="contentType != null">#{contentType,jdbcType=VARCHAR},</if>
+			<if test="isOriginal != null">#{isOriginal,jdbcType=INTEGER},</if>
+			<if test="thumbImg != null">#{thumbImg,jdbcType=VARCHAR},</if>
+			<if test="content != null">#{content,jdbcType=VARCHAR},</if>
+			<if test="summary != null">#{summary,jdbcType=VARCHAR},</if>
+			<if test="articleHash != null">#{articleHash,jdbcType=VARCHAR},</if>
+			<if test="onlineStatus != null">#{onlineStatus,jdbcType=INTEGER},</if>
+			<if test="registerNo != null">#{registerNo,jdbcType=VARCHAR},</if>
+			<if test="forwardFrom != null">#{forwardFrom,jdbcType=VARCHAR},</if>
+			<if test="clientId != null">#{clientId,jdbcType=VARCHAR},</if>
+			<if test="topLevel != null">#{topLevel,jdbcType=INTEGER},</if>
+		</trim>
+	</insert>
+	
+	<delete id="deleteArticles">
+		update public_article set onlineStatus = 4
+		where userId = #{userId,jdbcType=VARCHAR} 
+		and articleId in
+		<foreach collection="articleIds" item="articleId" open="(" close=")" separator=",">
+			#{articleId,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	
+	<update id="updateOnlineStatus" parameterType="com.taiyiyun.passport.po.PublicArticle">
+		update public_article set onlineStatus = #{onlineStatus, jdbcType=VARCHAR}
+		where articleId = #{articleId, jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getArticleStatus" resultMap="customMap">
+		select 'totalArticle' as `name`, count(atc.articleId) as `value` from public_article atc
+		UNION ALL
+		select 'totalAuthor' as `name`, count(a.userId) as `value` from (select atc1.userId from public_article atc1 GROUP BY atc1.userId) a;
+	</select>
+
+</mapper>

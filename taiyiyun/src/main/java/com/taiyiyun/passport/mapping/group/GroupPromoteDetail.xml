@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.group.IGroupPromoteDetailDao">
+
+    <parameterMap id="groupPromoteDetailParam" type="com.taiyiyun.passport.po.group.GroupPromoteDetail"/>
+
+    <resultMap id="groupPromoteDetailResult" type="com.taiyiyun.passport.po.group.GroupPromoteDetail">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="tradeId" property="tradeId" jdbcType="BIGINT" />
+        <result column="frozenId" property="frozenId" jdbcType="BIGINT" />
+        <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+        <result column="ownerId" property="ownerId" jdbcType="VARCHAR" />
+        <result column="coinId" property="coinId" jdbcType="VARCHAR" />
+        <result column="targetUserId" property="targetUserId" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="charge" property="charge" jdbcType="DECIMAL" />
+        <result column="transferStatus" property="transferStatus" jdbcType="INTEGER" />
+        <result column="transferTime" property="transferTime" jdbcType="TIMESTAMP" />
+        <result column="expireTime" property="expireTime" jdbcType="BIGINT" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="groupPromoteDetail_select_fields">
+        groupPromoteDetail.id,
+        groupPromoteDetail.tradeId,
+        groupPromoteDetail.frozenId,
+        groupPromoteDetail.groupId,
+        groupPromoteDetail.ownerId,
+        groupPromoteDetail.coinId,
+        groupPromoteDetail.targetUserId,
+        groupPromoteDetail.amount,
+        groupPromoteDetail.charge,
+        groupPromoteDetail.transferStatus,
+        groupPromoteDetail.transferTime,
+        groupPromoteDetail.expireTime,
+        groupPromoteDetail.createTime
+    </sql>
+
+    <sql id="groupPromoteDetail_insert_fields">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="tradeId != null">tradeId,</if>
+            <if test="frozenId != null">frozenId,</if>
+            <if test="groupId != null">groupId,</if>
+            <if test="ownerId != null">ownerId,</if>
+            <if test="coinId != null">coinId,</if>
+            <if test="targetUserId != null">targetUserId,</if>
+            <if test="amount != null">amount,</if>
+            <if test="charge != null">charge,</if>
+            <if test="transferStatus != null">transferStatus,</if>
+            <if test="transferTime != null">transferTime,</if>
+            <if test="expireTime != null">expireTime,</if>
+            <if test="createTime != null">createTime,</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteDetail_insert_values">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="tradeId != null">#{tradeId,jdbcType=BIGINT},</if>
+            <if test="frozenId != null">#{frozenId,jdbcType=BIGINT},</if>
+            <if test="groupId != null">#{groupId,jdbcType=VARCHAR},</if>
+            <if test="ownerId != null">#{ownerId,jdbcType=VARCHAR},</if>
+            <if test="coinId != null">#{coinId,jdbcType=VARCHAR},</if>
+            <if test="targetUserId != null">#{targetUserId,jdbcType=VARCHAR},</if>
+            <if test="amount != null">#{amount,jdbcType=DECIMAL},</if>
+            <if test="charge != null">#{charge,jdbcType=DECIMAL},</if>
+            <if test="transferStatus != null">#{transferStatus,jdbcType=INTEGER},</if>
+            <if test="transferTime != null">#{transferTime,jdbcType=TIMESTAMP},</if>
+            <if test="expireTime != null">#{expireTime,jdbcType=BIGINT},</if>
+            <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteDetail_update_set">
+        <trim prefixOverrides=",">
+            <if test="tradeId != null">, tradeId = #{tradeId,jdbcType=BIGINT}</if>
+            <if test="frozenId != null">, frozenId = #{frozenId,jdbcType=BIGINT}</if>
+            <if test="groupId != null">, groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">, ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">, coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="targetUserId != null">, targetUserId = #{targetUserId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">, amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="charge != null">, charge = #{charge,jdbcType=DECIMAL}</if>
+            <if test="transferStatus != null">, transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">, transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="expireTime != null">, expireTime = #{expireTime,jdbcType=BIGINT}</if>
+            <if test="createTime != null">, createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+    <sql id="groupPromoteDetail_update_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND id = #{id,jdbcType=BIGINT}</if>
+            <if test="tradeId != null">AND tradeId = #{tradeId,jdbcType=BIGINT}</if>
+            <if test="frozenId != null">AND frozenId = #{frozenId,jdbcType=BIGINT}</if>
+            <if test="groupId != null">AND groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">AND ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="targetUserId != null">AND targetUserId = #{targetUserId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="charge != null">AND charge = #{charge,jdbcType=DECIMAL}</if>
+            <if test="transferStatus != null">AND transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">AND transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="expireTime != null">AND expireTime = #{expireTime,jdbcType=BIGINT}</if>
+            <if test="createTime != null">AND createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteDetail_select_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND groupPromoteDetail.id = #{id,jdbcType=BIGINT}</if>
+            <if test="tradeId != null">AND groupPromoteDetail.tradeId = #{tradeId,jdbcType=BIGINT}</if>
+            <if test="frozenId != null">AND groupPromoteDetail.frozenId = #{frozenId,jdbcType=BIGINT}</if>
+            <if test="groupId != null">AND groupPromoteDetail.groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">AND groupPromoteDetail.ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND groupPromoteDetail.coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="targetUserId != null">AND groupPromoteDetail.targetUserId = #{targetUserId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND groupPromoteDetail.amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="charge != null">AND groupPromoteDetail.charge = #{charge,jdbcType=DECIMAL}</if>
+            <if test="transferStatus != null">AND groupPromoteDetail.transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+            <if test="transferTime != null">AND groupPromoteDetail.transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+            <if test="expireTime != null">AND groupPromoteDetail.expireTime = #{expireTime,jdbcType=BIGINT}</if>
+            <if test="createTime != null">AND groupPromoteDetail.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+    <insert id="insert" parameterMap="groupPromoteDetailParam">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into public_group_promote_detail
+        <include refid="groupPromoteDetail_insert_fields"/>
+        values
+        <include refid="groupPromoteDetail_insert_values"/>
+    </insert>
+
+    <update id="update" parameterMap="groupPromoteDetailParam">
+        update public_group_promote_detail
+        set <include refid="groupPromoteDetail_update_set"/>
+        <where>
+        <include refid="groupPromoteDetail_update_where_criterias"/>
+        </where>
+    </update>
+
+    <update id="updateById" parameterMap="groupPromoteDetailParam">
+        update public_group_promote_detail
+        set <include refid="groupPromoteDetail_update_set"/>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete public_group_promote_detail
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="listPage" parameterMap="groupPromoteDetailParam" resultMap="groupPromoteDetailResult">
+        select <include refid="groupPromoteDetail_select_fields"/>
+        from public_group_promote_detail redpacket
+        <where>
+        <include refid="groupPromoteDetail_select_where_criterias"/>
+        </where>
+        limit ${start},${offset}
+    </select>
+
+    <select id="list" parameterMap="groupPromoteDetailParam" resultMap="groupPromoteDetailResult">
+        select <include refid="groupPromoteDetail_select_fields"/>
+        from public_group_promote_detail groupPromoteDetail
+        <where>
+        <include refid="groupPromoteDetail_select_where_criterias"/>
+        </where>
+    </select>
+
+    <select id="listCriteria" parameterMap="groupPromoteDetailParam" resultMap="groupPromoteDetailResult">
+        select <include refid="groupPromoteDetail_select_fields"/>
+        from public_group_promote_detail groupPromoteDetail
+        <where>
+            <trim prefixOverrides="AND">
+                <if test="id != null">AND groupPromoteDetail.id = #{id,jdbcType=BIGINT}</if>
+                <if test="tradeId != null">AND groupPromoteDetail.tradeId = #{tradeId,jdbcType=BIGINT}</if>
+                <if test="frozenId != null">AND groupPromoteDetail.frozenId = #{frozenId,jdbcType=BIGINT}</if>
+                <if test="groupId != null">AND groupPromoteDetail.groupId = #{groupId,jdbcType=VARCHAR}</if>
+                <if test="ownerId != null">AND groupPromoteDetail.ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+                <if test="coinId != null">AND groupPromoteDetail.coinId = #{coinId,jdbcType=VARCHAR}</if>
+                <if test="targetUserId != null">AND groupPromoteDetail.targetUserId = #{targetUserId,jdbcType=VARCHAR}</if>
+                <if test="amount != null">AND groupPromoteDetail.amount = #{amount,jdbcType=DECIMAL}</if>
+                <if test="charge != null">AND groupPromoteDetail.charge = #{charge,jdbcType=DECIMAL}</if>
+                <if test="transferStatus != null">AND groupPromoteDetail.transferStatus = #{transferStatus,jdbcType=INTEGER}</if>
+                <if test="transferTime != null">AND groupPromoteDetail.transferTime = #{transferTime,jdbcType=TIMESTAMP}</if>
+                <if test="expireTime != null">AND groupPromoteDetail.expireTime > #{expireTime,jdbcType=BIGINT}</if>
+                <if test="createTime != null">AND groupPromoteDetail.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+            </trim>
+        </where>
+    </select>
+
+    <select id="getOneById" parameterType="java.lang.Long" resultMap="groupPromoteDetailResult">
+        select <include refid="groupPromoteDetail_select_fields"/>
+        from public_group_promote_detail groupPromoteDetail
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+</mapper>

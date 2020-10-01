@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IEntityDao">
+
+	<!--根据uuid查询已验证的entity信息-->
+	<select id="selectAuthedEntityByUUID" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.Entity" >
+		SELECT 	e.EntityId entityId,e.Entity_UnqueId entityUnqueId,e.TypeId,e.Status,e.EntityName,e.GradeId,e.CreationTime
+			FROM
+				Entity e
+			JOIN UserEntity ue ON e.EntityId = ue.EntityId
+			WHERE
+				e.TypeId = 1
+			AND e.Status = 1
+			AND ue.UUID = #{uuid, jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectEntitiesByIDCardAndUUID" parameterType="java.util.Map" resultType="com.taiyiyun.passport.sqlserver.po.Entity">
+		SELECT 	EntityId entityId,Entity_UnqueId entityUnqueId,TypeId,Status,EntityName,GradeId,CreationTime
+			FROM
+				Entity e
+			WHERE
+				e.Entity_UnqueId = #{idCard, jdbcType=VARCHAR}
+			AND e.TypeId = 1
+			AND e.Status = 1
+			AND EntityId NOT IN (
+				SELECT
+					EntityId
+				FROM
+					UserEntity ue
+				WHERE
+					ue.UUID = #{uuid, jdbcType=VARCHAR}
+				AND ue.Status != 1
+			)
+	</select>
+	<!--根据uuid查询个人实体信息列表-->
+	<select id="selectEntitysByUUID" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.Entity" >
+		SELECT
+			e.EntityId entityId, e.Entity_UnqueId entityUnqueId,e.TypeId typeId,e.Status status,
+			e.EntityName entityName,e.GradeId gradeId,e.CreationTime creationTime
+		FROM
+			Entity e
+		WHERE
+			EXISTS (select 1 from UserEntity ue where e.EntityId = ue.EntityId and uuid = #{uuid, jdbcType=VARCHAR})
+		AND TypeId = 1
+	</select>
+
+	<delete id="deleteEntityByEntityId" parameterType="java.lang.String">
+		delete from Entity where EntityId= #{entityId, jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.taiyiyun.passport.sqlserver.po.Entity">
+		insert into Entity
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="entityId != null">
+				EntityId,
+			</if>
+			<if test="entityUnqueId != null">
+				Entity_UnqueId,
+			</if>
+			<if test="typeId != null">
+				TypeId,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="entityName != null">
+				EntityName,
+			</if>
+			<if test="gradeId != null">
+				GradeId,
+			</if>
+			<if test="creationTime != null">
+				CreationTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="entityId != null">
+				#{entityId,jdbcType=VARCHAR},
+			</if>
+			<if test="entityUnqueId != null">
+				#{entityUnqueId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				#{typeId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="entityName != null">
+				#{entityName,jdbcType=VARCHAR},
+			</if>
+			<if test="gradeId != null">
+				#{gradeId,jdbcType=INTEGER},
+			</if>
+			<if test="creationTime != null">
+				#{creationTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<!-- 禁用空身份-->
+	<update id="disableEntityStatusZero" parameterType="java.lang.String">
+		update b set b.Status=0 from UserEntity as a inner join Entity as b on a.EntityId = b.EntityId where a.UUID=#{uuid, jdbcType=VARCHAR} and b.TypeId=0
+	</update>
+	<!-- 查询已实名认证的实体个数 -->
+	<select id="selectEntityHasAuthed" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1) count from Entity e join UserEntity ue on e.EntityId=ue.EntityId where e.Status=1 and e.TypeId=1 and ue.UUID=#{uuid, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getById" resultType="com.taiyiyun.passport.sqlserver.po.Entity">
+		SELECT 	EntityId entityId,Entity_UnqueId entityUnqueId,TypeId,Status,EntityName,GradeId,CreationTime
+		FROM
+			Entity 
+		WHERE
+			EntityId = #{entityId, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getByEntityUnqueIdAndTypeId" resultType="com.taiyiyun.passport.sqlserver.po.Entity">
+		SELECT 	EntityId entityId,Entity_UnqueId entityUnqueId,TypeId,Status,EntityName,GradeId,CreationTime
+		FROM
+			Entity 
+		WHERE
+			Entity_UnqueId = #{entityUnqueId, jdbcType=VARCHAR} AND Status = 1 AND TypeId = #{typeId, jdbcType=INTEGER}
+	</select>
+</mapper>

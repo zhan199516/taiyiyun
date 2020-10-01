@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IOldArticleDao">
+	<resultMap type="com.taiyiyun.passport.po.immigrate.OldArticle" id="baseResultMap">
+		<result column="PCMessageID" property="articleId" jdbcType="VARCHAR"/>
+		<result column="ImageType" property="imageType" jdbcType="VARCHAR"/>
+		<result column="Image" property="image" jdbcType="BLOB"/>
+		<result column="imagePath" property="imagePath" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	
+	<select id="getByUUID" parameterType="java.lang.Long" resultMap="baseResultMap">
+		select PCMessageID, CONCAT('/files/immigrate/article/', pm.PCMessageID) as imagePath, pt.Image, pt.ImageType
+		from PublicCircleMessage pm inner join PublicCircleMessageTxt pt on pm.MessageContent = pt.ContentID
+		inner join public_article pa on pa.articleId = concat(PCMessageID, '')
+		where pm.status = 2 and pt.Image is not null and pa.thumbImg is null
+		and PCMessageID > #{id, jdbcType=BIGINT} order by PCMessageID asc
+		limit 100
+	</select>
+	
+	<update id="updateArticle" parameterType="com.taiyiyun.passport.po.PublicArticle">
+		update public_article
+		<set>
+			<if test="thumbImg != null">thumbImg = #{thumbImg, jdbcType=VARCHAR}</if>
+		</set>
+		where articleId = #{articleId, jdbcType=VARCHAR}
+	</update>
+
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IUsersDao">
+	
+	<select id="getUserFromAddress" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.Users">
+		select * from Users u where u.Address=#{Address, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getUserByUUID" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.Users">
+		select * from Users u where u.UUID=#{uuid, jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateDefaultUserEntity" parameterType="java.util.Map">
+		update users set DefaultUserEntity = #{userEntityId, jdbcType=VARCHAR} where UUID = #{uuid, jdbcType=VARCHAR} and (DefaultUserEntity = '' or DefaultUserEntity is null);
+	</update>
+	
+	<select id="findByMobile" parameterType="java.lang.String" resultType="com.taiyiyun.passport.sqlserver.po.Users">
+		select * from Users u where u.Mobile=#{mobile, jdbcType=VARCHAR} and u.MobilePrefix = #{mobilePrefix, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getTotalCount" resultType="java.lang.Integer">
+		select count(1) FROM Users
+	</select>
+	
+	<insert id="save">
+		IF NOT EXISTS (select 1 from Users where Mobile = #{mobile, jdbcType=VARCHAR})  INSERT INTO Users
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="UUID != null and UUID != ''">UUID,</if>
+			<if test="Address != null and Address != ''">Address,</if>
+			<if test="Status != null and Status != ''">Status,</if>
+			<if test="AppID != null and AppID != ''">AppID,</if>
+			<if test="Mobile != null and Mobile != ''">Mobile,</if>
+			<if test="Pwd != null and Pwd != ''">Pwd,</if>
+			<if test="Version != null and Version != ''">Version,</if>
+			<if test="NikeName != null and NikeName != ''">NikeName,</if>
+			<if test="HeadPicture != null and HeadPicture != ''">HeadPicture,</if>
+			<if test="DefaultUserEntity != null and DefaultUserEntity != ''">DefaultUserEntity,</if>
+			<if test="CreationTime != null and CreationTime != ''">CreationTime,</if>
+			<if test="CauseOfFreezing != null and CauseOfFreezing != ''">CauseOfFreezing,</if>
+			<if test="OperationUserID != null and OperationUserID != ''">OperationUserID,</if>
+			<if test="Oper_user_name != null and Oper_user_name != ''">Oper_user_name,</if>
+			<if test="OperTime != null and OperTime != ''">OperTime,</if>
+			<if test="PersionFailCount != null and PersionFailCount != ''">PersionFailCount,</if>
+			<if test="ArtificialAuth != null and ArtificialAuth != ''">ArtificialAuth,</if>
+			<if test="LastLoginTime != null and LastLoginTime != ''">LastLoginTime,</if>
+			<if test="UserID != null and UserID != ''">UserID,</if>
+			<if test="ChainAddress != null and ChainAddress != ''">ChainAddress,</if>
+			<if test="ChainErrorCode != null and ChainErrorCode != ''">ChainErrorCode,</if>
+			<if test="ChainErrorMsg != null and ChainErrorMsg != ''">ChainErrorMsg,</if>
+			<if test="MobilePrefix != null and MobilePrefix != ''">MobilePrefix,</if>
+		</trim>
+		select
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="UUID != null and UUID != ''">#{UUID, jdbcType=VARCHAR},</if>
+			<if test="Address != null and Address != ''">#{Address, jdbcType=VARCHAR},</if>
+			<if test="Status != null and Status != ''">#{Status, jdbcType=INTEGER},</if>
+			<if test="AppID != null and AppID != ''">#{AppID, jdbcType=INTEGER},</if>
+			<if test="Mobile != null and Mobile != ''">#{Mobile, jdbcType=VARCHAR},</if>
+			<if test="Pwd != null and Pwd != ''">#{Pwd, jdbcType=VARCHAR},</if>
+			<if test="Version != null and Version != ''">#{Version, jdbcType=VARCHAR},</if>
+			<if test="NikeName != null and NikeName != ''">#{NikeName, jdbcType=VARCHAR},</if>
+			<if test="HeadPicture != null and HeadPicture != ''">#{HeadPicture, jdbcType=VARCHAR},</if>
+			<if test="DefaultUserEntity != null and DefaultUserEntity != ''">#{DefaultUserEntity, jdbcType=VARCHAR},</if>
+			<if test="CreationTime != null and CreationTime != ''">#{CreationTime, jdbcType=TIMESTAMP},</if>
+			<if test="CauseOfFreezing != null and CauseOfFreezing != ''">#{CauseOfFreezing, jdbcType=VARCHAR},</if>
+			<if test="OperationUserID != null and OperationUserID != ''">#{OperationUserID, jdbcType=BIGINT},</if>
+			<if test="Oper_user_name != null and Oper_user_name != ''">#{Oper_user_name, jdbcType=VARCHAR},</if>
+			<if test="OperTime != null and OperTime != ''">#{OperTime, jdbcType=TIMESTAMP},</if>
+			<if test="PersionFailCount != null and PersionFailCount != ''">#{PersionFailCount, jdbcType=INTEGER},</if>
+			<if test="ArtificialAuth != null and ArtificialAuth != ''">#{ArtificialAuth, jdbcType=INTEGER},</if>
+			<if test="LastLoginTime != null and LastLoginTime != ''">#{LastLoginTime, jdbcType=TIMESTAMP},</if>
+			<if test="UserID != null and UserID != ''">#{UserID, jdbcType=BIGINT},</if>
+			<if test="ChainAddress != null and ChainAddress != ''">#{ChainAddress, jdbcType=VARCHAR},</if>
+			<if test="ChainErrorCode != null and ChainErrorCode != ''">#{ChainErrorCode, jdbcType=INTEGER},</if>
+			<if test="ChainErrorMsg != null and ChainErrorMsg != ''">#{ChainErrorMsg, jdbcType=VARCHAR},</if>
+			<if test="MobilePrefix != null and MobilePrefix != ''">#{MobilePrefix, jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+	
+	<update id="updateUser" parameterType="com.taiyiyun.passport.sqlserver.po.Users">
+		UPDATE Users 
+		<trim prefix="set" suffixOverrides=",">
+			<if test="Address != null and Address != ''">Address = #{Address, jdbcType=VARCHAR},</if>
+			<if test="Status != null and Status != ''">Status = #{Status, jdbcType=INTEGER},</if>
+			<if test="AppID != null and AppID != ''">AppID = #{AppID, jdbcType=INTEGER},</if>
+			<if test="Mobile != null and Mobile != ''">Mobile = #{Mobile, jdbcType=VARCHAR},</if>
+			<if test="Pwd != null and Pwd != ''">Pwd = #{Pwd, jdbcType=VARCHAR},</if>
+			<if test="Version != null and Version != ''">Version = #{Version, jdbcType=VARCHAR},</if>
+			<if test="NikeName != null and NikeName != ''">NikeName= #{NikeName, jdbcType=VARCHAR},</if>
+			<if test="HeadPicture != null and HeadPicture != ''">HeadPicture = #{HeadPicture, jdbcType=VARCHAR},</if>
+			<if test="DefaultUserEntity != null and DefaultUserEntity != ''">DefaultUserEntity = #{DefaultUserEntity, jdbcType=VARCHAR},</if>
+			<if test="CreationTime != null and CreationTime != ''">CreationTime = #{CreationTime, jdbcType=TIMESTAMP},</if>
+			<if test="CauseOfFreezing != null and CauseOfFreezing != ''">CauseOfFreezing = #{CauseOfFreezing, jdbcType=VARCHAR},</if>
+			<if test="OperationUserID != null and OperationUserID != ''">OperationUserID = #{OperationUserID, jdbcType=BIGINT},</if>
+			<if test="Oper_user_name != null and Oper_user_name != ''">Oper_user_name = #{Oper_user_name, jdbcType=VARCHAR},</if>
+			<if test="OperTime != null and OperTime != ''">OperTime = #{OperTime, jdbcType=TIMESTAMP},</if>
+			<if test="PersionFailCount != null and PersionFailCount != ''">PersionFailCount = #{PersionFailCount, jdbcType=INTEGER},</if>
+			<if test="ArtificialAuth != null and ArtificialAuth != ''">ArtificialAuth = #{ArtificialAuth, jdbcType=INTEGER},</if>
+			<if test="LastLoginTime != null and LastLoginTime != ''">LastLoginTime = #{LastLoginTime, jdbcType=TIMESTAMP},</if>
+			<if test="UserID != null and UserID != ''">UserID = #{UserID, jdbcType=BIGINT},</if>
+			<if test="ChainAddress != null and ChainAddress != ''">ChainAddress = #{ChainAddress, jdbcType=VARCHAR},</if>
+			<if test="ChainErrorCode != null and ChainErrorCode != ''">ChainErrorCode = #{ChainErrorCode, jdbcType=INTEGER},</if>
+			<if test="ChainErrorMsg != null and ChainErrorMsg != ''">ChainErrorMsg = #{ChainErrorMsg, jdbcType=VARCHAR},</if>
+			<if test="MobilePrefix != null and MobilePrefix != ''">MobilePrefix = #{MobilePrefix, jdbcType=VARCHAR},</if>
+		</trim>
+		WHERE UUID = {UUID, jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateUserPwd" parameterType="com.taiyiyun.passport.sqlserver.po.Users">
+		UPDATE Users SET Pwd = #{Pwd, jdbcType=VARCHAR} WHERE UUID = #{UUID, jdbcType=VARCHAR}
+	</update>
+</mapper>

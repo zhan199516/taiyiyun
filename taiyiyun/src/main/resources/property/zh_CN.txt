@@ -1,0 +1,135 @@
+user.not.login = 用户未登录
+user.unauthorized = 无权限执行本次操作
+user.not.bind.uuid = 共享号未绑定账号
+user.name.not.find = 共享号不存在
+user.name.found = 共享号名称已经被使用
+user.name.available = 共享号名称可用
+user.dest.not.find = 目标共享号不存在
+user.not.find = 用户不存在
+user.lock.detail = 您的账号已被锁定，请{0}分钟以后登录
+user.other.login = 您的账户在{0}使用{1}刚刚登录。如果非您本人操作，请尽快更改您的密码。
+user.password.out = 您的账户密码已经被修改，您已经被强制退出。
+user.password.error.times = 密码错误，请重新输入，您还可以重试{0}次
+user.login.null = 获取不到登录数据
+user.name.length = 共享号名称不能超出{0}个字符
+user.name.content = 共享号名称含有不允许字符
+user.name.mobile.not.allow = 手机号不能作为共享号名称
+user.not.register = 未注册
+
+
+
+third.trade.bind.expired = 第三方平台绑定已经失效，请重新绑定
+third.trade.error.again = 第三方平台返回错误， 请重试
+third.trade.noFind = 参数错误或找不到指定币种
+third.trade.dest.null = 找不到接收方
+third.trade.dest.equal.source = 转账目标不能是自己
+third.trade.null.dest.or.source = 无法找到转账发起方或接收方账号
+
+
+article.forward.dest.unsupported = 转发来源不支持
+article.forward.source.unsupported = 转发的去向不支持
+article.forward.not.found = 转发的文章不存在或者已被删除
+article.operator.not.found = 系统不存在转发用户
+article.not.origin = 该文章非原创作品
+article.title.length.alert = 文章标题长度不能超出{0}个字符
+article.summary.length.alert = 文章摘要不能超出{0}个字符
+article.has.been.deleted = 文章不存在或已被删除
+article.appkey.match = 系统不存在对应的appKey信息
+article.alert.type.error = 举报类型错误
+article.alert.done = 文章已经被举报过
+
+
+password.lock = 密码已被锁定
+password.grammar.fault = 密码格式不正确
+password.not.found = 获取不到密码信息
+password.old.fault = 原始密码不正确
+
+
+
+need.param = 参数{0}不能为空
+need.param.invalid = 参数{0}无效
+need.search.param = 查询参数不能为空
+need.param.error = {0}参数错误
+need.match.error = 用户提交数据与所需不匹配
+need.json.error = 不是有效的json字符串
+need.password = 密码不能为空
+need.password.set = 未设置密码
+need.user.password.error = 用户名或密码错误
+need.password.error = 密码错误，请重新输入
+need.password.error.times = 密码错误，请重新输入，您还可以重试{0}次
+need.img = 图片不能为空
+need.appkey = AppKey不能为空
+need.device = 设备号不能为空
+need.mobile = 手机号不能为空
+need.mobile.register = 手机号已注册
+need.other.login.sms = 系统发现您未使用常用设备登录，需要提供短信验证码
+need.sms = 短信验证码不能为空
+need.sms.error = 验证码不正确或已经过期
+need.http.null = 找不到与请求匹配的 HTTP 资源
+need.article.title = 文章标题不能为空
+need.sign = 签名不能为空
+
+
+successful.operation = 操作成功
+successful.modify = 修改成功
+successful.password.set = 密码设置成功
+successful.upload = 上传成功
+successful.article.publish = 文章发布成功
+successful.search = 查询成功
+successful.delete = 删除成功
+successful.authorize = 验证通过
+successful.immigrate = 迁移完成{0}条数据
+successful.article.alert = 举报成功
+successful.user.create = 共享号创建成功
+successful.background = 背景图片设置成功
+successful.follow = 关注成功
+successful.unfollow = 取消关注成功
+successful.black = 拉黑成功
+successful.register = 注册成功
+successful.verify = 验证通过
+
+failed.operation = 操作失败
+failed.password.set = 密码设置失败
+failed.delete = 删除失败
+failed.delete.before = 数据不存在或已经被删除
+failed.save = 保存失败
+failed.modify = 修改失败
+failed.save.emoji = 保存失败，暂不支持表情符号
+failed.convert.utf8 = 设置Request字符编码为UTF-8异常。
+failed.user.bind = 执行用户绑定信息异常。
+failed.execute = 执行失败，请与技术支持联系
+failed.sign = 签名不正确
+failed.background = 背景图片设置失败
+failed.follow = 关注成功
+failed.follow.done = 已经关注
+failed.unfollow = 取消关注成功
+failed.unfollow.done = 已经取消关注
+failed.black = 拉黑失败
+failed.black.done = 已经拉黑
+failed.register = 注册失败
+failed.mobile.registered = 手机号已经注册
+failed.third.error = 第三方返回错误
+failed.operation.timeout = 操作超时
+
+
+yuanbao.bind.expired = 元宝网平台绑定已经过期
+yuanbao.return.error = 元宝网平台返回错误，请稍后重试
+
+mobile.grammar.fault = 手机号码不正确
+register.too.many = 当前注册人数较多，请稍后重试
+need.mobile.unregister = 手机号码未注册
+user.frozen = 账户已冻结
+need.last.password = 请输入正确的原密码
+user.address.fault = 用户地址错误
+picture.modify.deny.register = 已经完成身份认证，无法修改图片
+file.too.big.2m = 文件大小超过2M限制
+param.invalid = 参数不正确
+successful.binding = 绑定成功
+failed.binding = 绑定失败
+third.cooperate.stop = 该合作已停止
+only.idcard.passport = 身份证和护照只能选一个
+manual.check.deny = 不允许使用人工审核
+user.has.checked = 用户已有个人身份
+file.not.file = 文件不存在
+
+

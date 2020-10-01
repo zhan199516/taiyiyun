@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ILoginAppDao">
+	<resultMap type="com.taiyiyun.passport.po.LoginApp" id="baseResultMap">
+		<result column="appKey" property="appKey" jdbcType="VARCHAR"/>
+		<result column="appSecret" property="appSecret" jdbcType="VARCHAR"/>
+		<result column="appName" property="appName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="getItem" parameterType="java.lang.String" resultMap="baseResultMap">
+		select * from login_app where appKey = #{appKey, jdbcType=VARCHAR} limit 1
+	</select>
+
+</mapper>

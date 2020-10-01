@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IUserEntityDao">
+
+	<delete id="deleteUserEntityByEntityIdAndUUID" parameterType="java.util.Map">
+		delete from UserEntity where EntityId= #{entityId, jdbcType=VARCHAR} and UUID = #{uuid, jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insertSelective" parameterType="com.taiyiyun.passport.sqlserver.po.UserEntity">
+		insert into UserEntity
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userEntityId != null">
+				UserEntityId,
+			</if>
+			<if test="entityId != null">
+				EntityId,
+			</if>
+			<if test="uuid != null">
+				UUID,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="defaultAmount != null">
+				DefaultAmount,
+			</if>
+			<if test="failMessage != null">
+				FailMessage,
+			</if>
+			<if test="operationUserId != null">
+				OperationUserID,
+			</if>
+			<if test="operUserName != null">
+				Oper_user_name,
+			</if>
+			<if test="operTime != null">
+				OperTime,
+			</if>
+			<if test="auditChannel != null">
+				AuditChannel,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userEntityId != null">
+				#{userEntityId,jdbcType=VARCHAR},
+			</if>
+			<if test="entityId != null">
+				#{entityId,jdbcType=VARCHAR},
+			</if>
+			<if test="uuid != null">
+				#{uuid,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="defaultAmount != null">
+				#{defaultAmount,jdbcType=INTEGER},
+			</if>
+			<if test="failMessage != null">
+				#{failMessage,jdbcType=VARCHAR},
+			</if>
+			<if test="operationUserId != null">
+				#{operationUserId,jdbcType=INTEGER},
+			</if>
+			<if test="operUserName != null">
+				#{operUserName,jdbcType=VARCHAR},
+			</if>
+			<if test="operTime != null">
+				#{operTime,jdbcType=DATE},
+			</if>
+			<if test="auditChannel != null">
+				#{auditChannel,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="disableUserEntityStatusZero" parameterType="java.lang.String">
+		update a set a.Status=0 from UserEntity as a inner join Entity as b on a.EntityId = b.EntityId
+			where a.UUID=#{uuid, jdbcType=VARCHAR} and b.TypeId=0
+	</update>
+
+	<select id="selectUserEntityByUUIDAndTypeId" parameterType="java.util.Map" resultType="com.taiyiyun.passport.sqlserver.po.UserEntity">
+		select ue.UserEntityId userEntityId, ue.EntityId entityId,ue.UUID uuid,ue.Status status, ue.DefaultAmount defaultAmount,ue.FailMessage failMessage,ue.OperationUserID operationUserId, ue.Oper_user_name operUserName,ue.OperTime operTime,ue.AuditChannel auditChannel from UserEntity ue inner join entity e on ue.EntityId=e.EntityId and e.TypeId = #{typeId, jdbcType=INTEGER}
+			where ue.UUID=#{uuid, jdbcType=VARCHAR} order by e.CreationTime asc
+	</select>
+
+</mapper>

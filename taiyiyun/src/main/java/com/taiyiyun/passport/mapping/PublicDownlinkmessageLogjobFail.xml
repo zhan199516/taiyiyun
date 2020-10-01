@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicDownlinkmessageLogjobFailDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicDownlinkmessageLogjobFail">
+		<id column="jobId" jdbcType="INTEGER" property="jobId" />
+		<result column="topic" jdbcType="VARCHAR" property="topic" />
+		<result column="messageId" jdbcType="VARCHAR" property="messageId" />
+		<result column="message" jdbcType="VARCHAR" property="message" />
+		<result column="createTime" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="updateTime" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="errMsg" jdbcType="VARCHAR" property="errMsg" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		jobId,
+		topic,
+		messageId,
+		message,
+		createTime,
+		updateTime,
+		status,
+		errMsg
+	</sql>
+
+	<select id="selectByPrimarykey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from public_downlinkmessage_logjob_fail where jobId = #{jobId, jdbcType = INTEGER}
+	</select>
+
+
+	<insert id="insertSelective" parameterType="com.taiyiyun.passport.po.PublicDownlinkmessageLogjobFail" keyProperty="jobId"
+			keyColumn="jobId" useGeneratedKeys="true">
+		insert into public_downlinkmessage_logjob_fail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="topic != null">
+				topic,
+			</if>
+			<if test="messageId != null">
+				messageId,
+			</if>
+			<if test="message != null">
+				message,
+			</if>
+			<if test="createTime != null">
+				createTime,
+			</if>
+			<if test="updateTime != null">
+				updateTime,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="errMsg != null">
+				errMsg,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="topic != null">
+				#{topic,jdbcType=VARCHAR},
+			</if>
+			<if test="messageId != null">
+				#{messageId,jdbcType=VARCHAR},
+			</if>
+			<if test="message != null">
+				#{message,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="errMsg != null">
+				#{errMsg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		  delete from public_downlinkmessage_logjob_fail
+		  where jobId = #{jobId,jdbcType=INTEGER}
+	</delete>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.taiyiyun.passport.po.PublicDownlinkmessageLogjobFail">
+		update public_downlinkmessage_logjob_fail
+		<set>
+			<if test="topic != null">
+				#{topic,jdbcType=VARCHAR},
+			</if>
+			<if test="messageId != null">
+				#{messageId,jdbcType=VARCHAR},
+			</if>
+			<if test="message != null">
+				#{message,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="errMsg != null">
+				#{errMsg,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where jobId = #{jobId,jdbcType=INTEGER}
+	</update>
+
+</mapper>

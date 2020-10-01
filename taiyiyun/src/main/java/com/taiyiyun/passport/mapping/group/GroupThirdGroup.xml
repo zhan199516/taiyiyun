@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.group.IGroupThirdGroupDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.group.GroupThirdGroup">
+		<id column="gtId" jdbcType="VARCHAR" property="gtId" />
+		<id column="groupId" jdbcType="VARCHAR" property="groupId" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		gtId, groupId, sort
+	</sql>
+
+	<select id="selectGroupThirdGroupsByGtId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/> from public_group_third_group where gtId = #{gtId, jdbcType = VARCHAR} order by sort
+	</select>
+
+</mapper>

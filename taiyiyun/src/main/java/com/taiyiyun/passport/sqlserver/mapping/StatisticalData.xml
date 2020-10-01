@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.sqlserver.dao.IStatisticalDataDao">
+
+
+	<select id="selectStatisticalData" resultType="com.taiyiyun.passport.sqlserver.po.StatisticalData">
+		select (select count(1) allCount from Users where Status=1) allCount, (select count(1) PersionCount from Entity where Status = 1 and TypeId = 1) PersionCount, (select count(1) TodayCount from Users where Status = 1 and CONVERT(varchar(100), CreationTime, 23) = CONVERT(varchar(100), GETDATE(), 23)) TodayCount
+	</select>
+
+</mapper>

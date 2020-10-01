@@ -1,0 +1,362 @@
+﻿/*格式化样式*/
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+fieldset,
+img {
+    border: 0 ;
+    vertical-align : middle;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+    font-style: normal;
+    font-weight: normal
+}
+
+ol,
+ul {
+    list-style: none
+}
+
+caption,
+th {
+    text-align: left
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+q:before,
+q:after {
+    content: '';
+}
+
+abbr,
+acronym {
+    border: 0;
+}
+
+input {
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: "Microsoft YaHei", "宋体";
+}
+
+select,
+input {
+    vertical-align: middle;
+}
+
+select,
+input,
+textarea {
+    font-size: 12px;
+    margin: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+s,
+i,
+em {
+    font-style: normal;
+    text-decoration: none;
+}
+
+/***********通用基本类2************/
+
+/* Copyright 2008 TSXMLOVE. All Rights Reserved. */
+
+* {
+    padding: 0px;
+    margin: 0px;
+    font-family: "微软雅黑", "黑体", "宋体", Arial, Verdana, Tahoma, Helvetica, sans-serif,Mac Windows Linux;
+}
+
+body {
+    font-size: 14px;
+    line-height: 150%;
+    color: #000000;
+    background-color: #ffffff;
+}
+
+html {
+    font-size: 12px;
+}
+
+.main-box {
+    margin-right: auto;
+    margin-left: auto;
+    width: 1200px;
+    clear: both;
+    zoom: 1;
+    background-color: #FFFFFF;
+}
+
+.text-overflow-hidden {
+    white-space: nowrap;
+    word-spacing: normal;
+    letter-spacing: normal;
+    overflow: hidden;
+}
+
+/*文字排版、颜色*/
+
+.fb {
+    font-weight: bold;
+}
+
+.fn {
+    font-weight: normal;
+}
+
+.t2 {
+    text-indent: 2em;
+}
+
+.unl {
+    text-decoration: underline;
+}
+
+.no_unl {
+    text-decoration: none;
+}
+
+/*定位*/
+
+.tl {
+    text-align: left;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tr {
+    text-align: right;
+}
+
+.fl {
+    float: left;
+    display: inline;
+}
+
+.fr {
+    float: right;
+    display: inline;
+}
+
+.cb {
+    clear: both;
+}
+
+.cl {
+    clear: left;
+}
+
+.cr {
+    clear: right;
+}
+
+.vm {
+    vertical-align: middle;
+}
+
+.pr {
+    position: relative;
+}
+
+.pa {
+    position: absolute;
+}
+
+.zoom {
+    zoom: 1;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.none {
+    display: none;
+}
+
+/*css定义超链接四个状态也有顺序的。*/
+
+a:link,
+a:visited {
+    text-decoration: none;
+    color: #000;
+}
+
+a:hover,
+a:active {
+    text-decoration: none;
+    color: #BD0A01;
+    border: none;
+}
+
+/*以上语句分别定义了"链接、已访问过的链接、鼠标停在上方时、点下鼠标时"的样式。
+注意，必须按以上顺序写，否则显示可能和你预想的不一样。记住它们的顺序是“LVHA”。*/
+
+.valign {
+    display: table-cell;
+    *display: inline;
+    zoom: 1;
+    vertical-align: middle;
+}
+
+.text {
+    word-wrap: break-word;
+    overflow: hidden;
+    word-break: break-all;
+}
+
+/*以下样式针对IE*/
+
+.edge {
+    width: 0;
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.container {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+/*===============================================*/
+
+/*CSS Hack*/
+
+.class {
+    background-color: #FFFF00;
+    /*所有浏览器*/
+    *background-color: #00FF00;
+    /*IE*/
+    _background-color: #00FFFF;
+    /*IE6*/
+}
+
+/*======万能Float闭合======*/
+
+.clear:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.clear {
+    zoom: 1;
+    display: block;
+}
+
+/* for IE/Mac */
+
+/*<!-- main stylesheet ends, CC with new stylesheet below... -->*/
+
+/*.clear {*/
+
+/*zoom: 1;*/
+
+/* triggers hasLayout */
+
+/*display: block;*/
+
+/* resets display for IE/Win */
+
+/*}
+*/
+
+/* Only IE can see inside the conditional comment
+    and read this CSS rule. Don't ever use a normal HTML
+    comment inside the CC or it will close prematurely. */
+
+/*======万能Float闭合2======*/
+
+/*.overflow-hidden {
+    overflow: hidden;
+}
+*/
+
+/*控制背景溢出*/
+
+/*======万能Float闭合3======*/
+
+/*.clear {
+    height: 0px;
+    clear: both;
+    font-size: 0px;
+    line-height: 0px;
+    zoom: 1;
+}
+*/
+
+/*.clear:after {
+    clear: both;
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}*/
+
+/*==for FF/chrome/opera/IE8==*/
+
+/*.clear {
+    zoom: 1;
+}*/
+
+/*==for IE6/7 Maxthon2==*/

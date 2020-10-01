@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicUserDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicUser">
+		<id column="userId" property="id" jdbcType="VARCHAR" />
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="avatarUrl" property="avatarUrl" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="typeId" property="typeId" jdbcType="VARCHAR" />
+		<result column="uuid" property="uuid" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="VARCHAR" />
+		<result column="appkey" property="appKey" jdbcType="VARCHAR" />
+		<result column="userKey" property="userKey" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="thumbAvatarUrl" jdbcType="VARCHAR" />
+		<result column="backgroundImgUrl" property="backgroundImgUrl" jdbcType="VARCHAR" />
+		<result column="barrier" property="isBarrier" jdbcType="INTEGER" />
+		<result column="useTime" property="useTime" jdbcType="TIMESTAMP" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+		<result column="lastMsgPullTime" property="lastMsgPullTime" jdbcType="BIGINT"/>
+		<result column="mobilePrefix" property="mobilePrefix" jdbcType="VARCHAR" />
+
+		<result column="isTop" property="isTop" jdbcType="INTEGER"/>
+		<result column="isDisturb" property="isDisturb" jdbcType="INTEGER"/>
+		<result column="fansCount" property="fansCount" jdbcType="INTEGER"/>
+		<result column="followersCount" property="followersCount" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<resultMap id="UserLatestTime" type="com.taiyiyun.passport.po.message.UserLatestTime">
+		<id column="userId" property="userId" jdbcType="VARCHAR" />
+		<id column="lastUpdateTime" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<resultMap id="pwdMap" type="com.taiyiyun.passport.po.MqttUserPWD" >
+		<result column="userId" property="userId" jdbcType="VARCHAR"/>
+		<result column="mqttPwd" property="mqttPwd" jdbcType="VARCHAR"/>
+		<result column="mqttPwdEncode" property="mqttPwdEncode" jdbcType="VARCHAR"/>
+		<result column="mqttPwdExpireTime" property="mqttPwdExpireTime" jdbcType="BIGINT"/>
+	</resultMap>
+
+	<resultMap id="topMap" type="com.taiyiyun.passport.po.PublicUserTop">
+		<result column="userId" property="userId" jdbcType="VARCHAR"/>
+		<result column="topType" property="topType" jdbcType="INTEGER"/>
+		<result column="topLevel" property="topLevel" jdbcType="INTEGER"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		userID, userName, status, avatarUrl, createTime, description,
+		typeId, uuid, version, appkey, userKey, thumbAvatarUrl, backgroundImgUrl,barrier,useTime,mobile, lastMsgPullTime, mobilePrefix
+	</sql>
+
+	<select id="getByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from public_user
+		where userName = #{userName,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getByUuid" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from public_user
+		where uuid = #{uuId,jdbcType=VARCHAR} order by useTime desc
+	</select>
+	
+	<select id="getByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from public_user
+		where userID = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getByStrictId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from public_user
+		where userID = #{userId,jdbcType=VARCHAR} and uuid = #{uuid,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getLatestUpdateTime" resultMap="UserLatestTime">
+		select userId, max(updateTime) lastUpdateTime
+		from public_article where userId in
+		<foreach collection="userList" item="userId" index="index" open="(" close=")" separator=",">
+			#{userId}
+		</foreach>
+		group by userId
+	</select>
+
+	<select id="getMqttPwdById" resultMap="pwdMap" parameterType="java.lang.String">
+		select userId, mqttPwd, mqttPwdEncode, mqttPwdExpireTime from public_user where userId = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<select id="getUserTop" parameterType="java.lang.String" resultMap="topMap">
+		select userId, topType, topLevel  from public_user where userId = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<update id="newMqttPwd" parameterType="com.taiyiyun.passport.po.MqttUserPWD">
+		update public_user set
+		mqttPwd = #{mqttPwd, jdbcType=VARCHAR},
+		mqttPwdEncode = #{mqttPwdEncode, jdbcType=VARCHAR},
+		mqttPwdExpireTime = #{mqttPwdExpireTime, jdbcType=BIGINT}
+		where userId = #{userId, jdbcType=VARCHAR}
+	</update>
+
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicUser">
+		insert into public_user
+		<selectKey keyProperty="id" resultType="String" order="BEFORE">
+            select replace(uuid(),'-','') from dual 
+        </selectKey>
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">userID,</if>
+			<if test="userName != null">userName,</if>
+			<if test="status != null">status,</if>
+			<if test="avatarUrl != null">avatarUrl,</if>
+			<if test="createTime != null">createTime,</if>
+			<if test="description != null">description,</if>
+			<if test="typeId != null">typeId,</if>
+			<if test="uuid != null">uuid,</if>
+			<if test="version != null">version,</if>
+			<if test="appKey != null">appkey,</if>
+			<if test="userKey != null">userKey,</if>
+			<if test="thumbAvatarUrl != null">thumbAvatarUrl,</if>
+			<if test="backgroundImgUrl != null">backgroundImgUrl,</if>
+			<if test="useTime != null">useTime,</if>
+			<if test="mobile != null">mobile,</if>
+			<if test="isBarrier != null">barrier,</if>
+			<if test="mobilePrefix != null">mobilePrefix,</if>
+			
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">#{id,jdbcType=INTEGER},</if>
+			<if test="userName != null">#{userName,jdbcType=VARCHAR},</if>
+			<if test="status != null">#{status,jdbcType=VARCHAR},</if>
+			<if test="avatarUrl != null">#{avatarUrl,jdbcType=VARCHAR},</if>
+			<if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="description != null">#{description,jdbcType=VARCHAR},</if>
+			<if test="typeId != null">#{typeId,jdbcType=VARCHAR},</if>
+			<if test="uuid != null">#{uuid,jdbcType=VARCHAR},</if>
+			<if test="version != null">#{version,jdbcType=VARCHAR},</if>
+			<if test="appKey != null">#{appKey,jdbcType=VARCHAR},</if>
+			<if test="userKey != null">#{userKey,jdbcType=VARCHAR},</if>
+			<if test="thumbAvatarUrl != null">#{thumbAvatarUrl,jdbcType=VARCHAR},</if>
+			<if test="backgroundImgUrl != null">#{backgroundImgUrl,jdbcType=VARCHAR},</if>
+			<if test="useTime != null">#{useTime,jdbcType=VARCHAR},</if>
+			<if test="mobile != null">#{mobile,jdbcType=VARCHAR},</if>
+			<if test="isBarrier != null">#{isBarrier,jdbcType=INTEGER},</if>
+			<if test="mobilePrefix != null">#{mobilePrefix,jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+	
+	<update id="update" parameterType="com.taiyiyun.passport.po.PublicUser">
+		update public_user
+		<set>
+			<if test="userName != null">userName = #{userName,jdbcType=VARCHAR},</if>
+			<if test="status != null">status = #{status,jdbcType=VARCHAR},</if>
+			<if test="avatarUrl != null">avatarUrl = #{avatarUrl,jdbcType=VARCHAR},</if>
+			<if test="createTime != null">createTime = #{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="description != null">description = #{description,jdbcType=VARCHAR},</if>
+			<if test="typeId != null">typeId = #{typeId,jdbcType=VARCHAR},</if>
+			<if test="uuid != null">uuid = #{uuid,jdbcType=VARCHAR},</if>
+			<if test="version != null">version = #{version,jdbcType=VARCHAR},</if>
+			<if test="appKey != null">appKey = #{appKey,jdbcType=VARCHAR},</if>
+			<if test="userKey != null">userKey = #{userKey,jdbcType=VARCHAR},</if>
+			<if test="thumbAvatarUrl != null">thumbAvatarUrl = #{thumbAvatarUrl,jdbcType=VARCHAR},</if>
+			<if test="backgroundImgUrl != null">backgroundImgUrl = #{backgroundImgUrl,jdbcType=VARCHAR},</if>
+			<if test="isBarrier != null">barrier = #{isBarrier,jdbcType=INTEGER},</if>
+			<if test="useTime != null">useTime = #{useTime,jdbcType=VARCHAR},</if>
+			<if test="mobile != null">mobile = #{mobile,jdbcType=VARCHAR},</if>
+			<if test="lastMsgPullTime != null">lastMsgPullTime = #{lastMsgPullTime, jdbcType=BIGINT},</if>
+			<if test="mobilePrefix != null">mobilePrefix = #{mobilePrefix,jdbcType=VARCHAR},</if>
+		</set>
+		where userId = #{id,jdbcType=INTEGER}
+	</update>
+
+	<update id="updateMsgPullTime">
+		update public_user
+		set lastMsgPullTime = #{lastMsgPullTime, jdbcType=BIGINT}
+		where userId = #{userId,jdbcType=INTEGER}
+	</update>
+
+	
+	<select id="getByType" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select * from public_user where typeId = #{type, jdbcType=INTEGER}
+	</select>
+	
+	<delete id="delete">
+		delete from public_user where uuid = #{uuid, jdbcType=VARCHAR} and userId = #{userId, jdbcType=VARCHAR}
+	</delete>
+	
+	<delete id="deleteUser" parameterType="com.taiyiyun.passport.po.PublicUser">
+		delete from public_user where userId = #{userId, jdbcType=VARCHAR} 
+		<if test="null != mobile"> and mobile = #{mobile, jdbcType=VARCHAR}</if>
+		<if test="null != uuid"> and uuid = #{uuid, jdbcType=VARCHAR}</if>
+	</delete>
+	
+	<select id="searchForUserList" resultMap="BaseResultMap">
+		select * from public_user where 1 = 1 and uuid is not null
+		<trim>
+			<if test="key != null"> AND userName like CONCAT('%', #{key, jdbcType=VARCHAR}, '%')</if>
+		</trim>
+	</select>
+	
+	<select id="getUserInfoByUserIds" resultMap="BaseResultMap">
+		select * from public_user where userId in
+		<foreach collection="userIdList" open="(" close=")" separator="," item="userId">
+			<if test="userId != null"> #{userId,jdbcType=VARCHAR} </if>
+		</foreach>
+	</select>
+	
+	<select id="getByAppId" resultMap="BaseResultMap">
+		select * from public_user where appkey = #{appId, jdbcType=VARCHAR} 
+	</select>
+	
+	<select id="searchForUserListByMobile" resultMap="BaseResultMap">
+		select * from public_user where mobile = #{mobile, jdbcType=VARCHAR}
+	</select>
+	<select id="getUnregisteredUserByMobile" resultMap="BaseResultMap">
+		select * from public_user where 1 = 1 and (uuid is null or uuid = '')
+		<trim>
+			<if test="mobile != null">and mobile = #{mobile, jdbcType=VARCHAR}</if>
+		</trim>
+	</select>
+
+	<select id="getByUserIds" resultMap="BaseResultMap" parameterType="com.taiyiyun.passport.po.PublicUser">
+		select DISTINCT
+			puser.userID id,
+			puser.userName,
+			puser.`status`,
+			puser.avatarUrl,
+			puser.createTime,
+			puser.description,
+			puser.typeId,
+			puser.uuid,
+			puser.version,
+			puser.appkey,
+			puser.userKey,
+			puser.thumbAvatarUrl,
+			puser.backgroundImgUrl,
+			puser.barrier,
+			puser.useTime,
+			puser.mobile,
+			puser.lastMsgPullTime,
+			puser.mobilePrefix,
+			_userConfig.isTop,
+			_userConfig.isDisturb,
+			_publicUserLike1.fansCount,
+			_publicUserLike2.followersCount
+		from public_user puser
+		left join (
+			select
+				userConfig.targetId targetId,
+				userConfig.isTop isTop,
+				userConfig.isDisturb isDisturb
+			from public_user_config userConfig
+			<where>
+				<trim suffixOverrides="and">
+					<if test="setupUserId != null">
+						userConfig.setupUserId = #{setupUserId,jdbcType=VARCHAR} and
+					</if>
+					<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+						userConfig.targetId = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</trim>
+			</where>
+		) _userConfig on _userConfig.targetId=puser.userId
+		left join (
+			select
+				publicUserLike.likeId likeId,
+				count(publicUserLike.id) fansCount
+			from public_user_like publicUserLike
+			<where>
+				<trim suffixOverrides="and">
+					<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+						publicUserLike.likeId = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</trim>
+			</where>
+			group by publicUserLike.likeId
+		) _publicUserLike1 on puser.userId=_publicUserLike1.likeId
+		left join (
+			select
+				publicUserLike.userId userId,
+				count(publicUserLike.id) followersCount
+			from public_user_like publicUserLike
+			<where>
+				<trim suffixOverrides="and">
+					<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+						publicUserLike.userId = #{item, jdbcType=VARCHAR}
+					</foreach>
+				</trim>
+			</where>
+			group by publicUserLike.userId
+		) _publicUserLike2 on puser.userId=_publicUserLike2.userId
+		<where>
+			<trim suffixOverrides="and">
+				<foreach collection="userIds" open="(" close=")" item="item" index="index" separator="or">
+					puser.userId = #{item, jdbcType=VARCHAR}
+				</foreach>
+			</trim>
+		</where>
+	</select>
+
+</mapper>

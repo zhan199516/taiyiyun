@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleLevelDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicArticleLevel">
+		<id column="levelId" property="levelId" jdbcType="BIGINT" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="likeLevel" property="likeLevel" jdbcType="SMALLINT" />
+		<result column="articleId" property="articleId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		levelId, userId, createTime, likeLevel, articleId
+	</sql>
+
+	<select id="getByTowId" resultMap="BaseResultMap" >
+		select
+		<include refid="Base_Column_List" />
+		from public_article_level
+		where articleId = #{articleId,jdbcType=VARCHAR} and userId = #{userId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insert" parameterType="com.taiyiyun.passport.po.PublicArticleLevel" >
+		insert into public_article_level(userId, likeLevel, articleId) select
+		#{userId, jdbcType=VARCHAR},
+		#{likeLevel, jdbcType=SMALLINT},
+		#{articleId, jdbcType=VARCHAR}
+		where not exists(
+		select 1 from public_article_level where articleId = #{articleId, jdbcType=VARCHAR} and userId = #{userId, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="update" parameterType="com.taiyiyun.passport.po.PublicArticleLevel">
+		update public_article_level set
+		LikeLevel = #{likeLevel, jdbcType=SMALLINT},
+		CreateTime = #{createTime, jdbcType=TIMESTAMP}
+		where articleId = #{articleId, jdbcType=VARCHAR} and userId = #{userId, jdbcType=VARCHAR}
+	</update>
+
+
+</mapper>

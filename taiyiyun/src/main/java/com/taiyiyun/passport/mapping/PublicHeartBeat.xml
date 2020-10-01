@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicHeartBeatDao">
+	<resultMap type="com.taiyiyun.passport.po.PublicHeartBeat" id="baseResultMap">
+		<result column="userId" property="userId" jdbcType="VARCHAR"/>
+		<result column="updateTime" property="updateTime" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<insert id="save" parameterType="com.taiyiyun.passport.po.PublicHeartBeat">
+		insert into public_heart_beat(userId, updateTime) values(#{userId, jdbcType=VARCHAR}, #{updateTime, jdbcType=INTEGER})
+		ON DUPLICATE KEY UPDATE updateTime = #{updateTime, jdbcType=INTEGER}
+	</insert>
+	
+	<select id="selectByUserId" parameterType="java.lang.String" resultMap="baseResultMap">
+		select userId, updateTime from account where uuid = #{userId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectUserIds" parameterType="java.util.Map" resultType="java.lang.String">
+		select hb.userId from public_heart_beat hb inner join public_group_memeber gm on hb.userId = gm.userId  and gm.groupId = #{groupId, jdbcType=VARCHAR} where hb.updatetime &gt; = #{updateTime, }
+	</select>
+
+</mapper>

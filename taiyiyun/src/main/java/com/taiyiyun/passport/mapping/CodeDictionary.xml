@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ICodeDictionaryDao" >
+	<resultMap type="com.taiyiyun.passport.po.CodeDictionary" id="baseResultMap">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="business" property="business" jdbcType="VARCHAR"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="caption" property="caption" jdbcType="VARCHAR"/>
+		<result column="sortId" property="sortId" jdbcType="INTEGER"/>
+	</resultMap>
+	
+	<select id="getByBusiness" parameterType="java.lang.String" resultMap="baseResultMap">
+		select id, business, code, caption, sortId from code_dictionary where business = #{business, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getById" parameterType="java.lang.Integer" resultMap="baseResultMap">
+		select id, business, code, caption, sortId from code_dictionary where id = #{id, jdbcType=INTEGER}
+	</select>
+</mapper>

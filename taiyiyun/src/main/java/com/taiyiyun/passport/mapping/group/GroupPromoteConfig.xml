@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.group.IGroupPromoteConfigDao">
+
+    <parameterMap id="groupPromoteConfigParam" type="com.taiyiyun.passport.po.group.GroupPromoteConfig"/>
+
+    <resultMap id="groupPromoteConfigResult" type="com.taiyiyun.passport.po.group.GroupPromoteConfig">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+        <result column="ownerId" property="ownerId" jdbcType="VARCHAR" />
+        <result column="coinId" property="coinId" jdbcType="VARCHAR" />
+        <result column="platformId" property="platformId" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="isNotice" property="isNotice" jdbcType="INTEGER" />
+        <result column="countThreshold" property="countThreshold" jdbcType="INTEGER" />
+        <result column="noticeInterval" property="noticeInterval" jdbcType="INTEGER" />
+        <result column="noticeBeginHour" property="noticeBeginHour" jdbcType="INTEGER" />
+        <result column="noticeEndHour" property="noticeEndHour" jdbcType="INTEGER" />
+        <result column="noticeTime" property="noticeTime" jdbcType="TIMESTAMP" />
+        <result column="noticePhone" property="noticePhone" jdbcType="VARCHAR" />
+        <result column="noticeEmail" property="noticeEmail" jdbcType="VARCHAR" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="groupPromoteConfig_select_fields">
+        groupPromoteConfig.id,
+        groupPromoteConfig.groupId,
+        groupPromoteConfig.ownerId,
+        groupPromoteConfig.coinId,
+        groupPromoteConfig.platformId,
+        groupPromoteConfig.amount,
+        groupPromoteConfig.isNotice,
+        groupPromoteConfig.countThreshold,
+        groupPromoteConfig.noticeInterval,
+        groupPromoteConfig.noticeBeginHour,
+        groupPromoteConfig.noticeEndHour,
+        groupPromoteConfig.noticeTime,
+        groupPromoteConfig.noticePhone,
+        groupPromoteConfig.noticeEmail,
+        groupPromoteConfig.modifyTime,
+        groupPromoteConfig.createTime
+    </sql>
+
+    <sql id="groupPromoteConfig_insert_fields">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">id,</if>
+          <if test="groupId != null">groupId,</if>
+          <if test="ownerId != null">ownerId,</if>
+          <if test="coinId != null">coinId,</if>
+          <if test="platformId != null">platformId,</if>
+          <if test="amount != null">amount,</if>
+          <if test="isNotice != null">isNotice,</if>
+          <if test="countThreshold != null">countThreshold,</if>
+          <if test="noticeInterval != null">noticeInterval,</if>
+          <if test="noticeBeginHour != null">noticeBeginHour,</if>
+          <if test="noticeEndHour != null">noticeEndHour,</if>
+          <if test="noticeTime != null">noticeTime,</if>
+          <if test="noticePhone != null">noticePhone,</if>
+          <if test="noticeEmail != null">noticeEmail,</if>
+          <if test="modifyTime != null">modifyTime,</if>
+          <if test="createTime != null">createTime,</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteConfig_insert_values">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">#{id,jdbcType=BIGINT},</if>
+          <if test="groupId != null">#{groupId,jdbcType=VARCHAR},</if>
+          <if test="ownerId != null">#{ownerId,jdbcType=VARCHAR},</if>
+          <if test="coinId != null">#{coinId,jdbcType=VARCHAR},</if>
+          <if test="platformId != null">#{platformId,jdbcType=VARCHAR},</if>
+          <if test="amount != null">#{amount,jdbcType=DECIMAL},</if>
+          <if test="isNotice != null">#{isNotice,jdbcType=INTEGER},</if>
+          <if test="countThreshold != null">#{countThreshold,jdbcType=INTEGER},</if>
+          <if test="noticeInterval != null">#{noticeInterval,jdbcType=INTEGER},</if>
+          <if test="noticeBeginHour != null">#{noticeBeginHour,jdbcType=INTEGER},</if>
+          <if test="noticeEndHour != null">#{noticeEndHour,jdbcType=INTEGER},</if>
+          <if test="noticeTime != null">#{noticeTime,jdbcType=TIMESTAMP},</if>
+          <if test="noticePhone != null">#{noticePhone,jdbcType=VARCHAR},</if>
+          <if test="noticeEmail != null">#{noticeEmail,jdbcType=VARCHAR},</if>
+          <if test="modifyTime != null">#{modifyTime,jdbcType=TIMESTAMP},</if>
+          <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteConfig_update_set">
+        <trim prefixOverrides=",">
+            <if test="id != null">, id = #{id,jdbcType=BIGINT}</if>
+            <if test="groupId != null">, groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">, ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">, coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">, platformId = #{platformId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">, amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="isNotice != null">, isNotice = #{isNotice,jdbcType=INTEGER}</if>
+            <if test="countThreshold != null">, countThreshold = #{countThreshold,jdbcType=INTEGER}</if>
+            <if test="noticeInterval != null">, noticeInterval = #{noticeInterval,jdbcType=INTEGER}</if>
+            <if test="noticeBeginHour != null">, noticeBeginHour = #{noticeBeginHour,jdbcType=INTEGER}</if>
+            <if test="noticeEndHour != null">, noticeEndHour = #{noticeEndHour,jdbcType=INTEGER}</if>
+            <if test="noticeTime != null">, noticeTime = #{noticeTime,jdbcType=TIMESTAMP}</if>
+            <if test="noticePhone != null">, noticePhone = #{noticePhone,jdbcType=VARCHAR}</if>
+            <if test="noticeEmail != null">, noticeEmail = #{noticeEmail,jdbcType=VARCHAR}</if>
+            <if test="modifyTime != null">, createTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">, createTime = #{createTime,jdbcType=BIGINT}</if>
+        </trim>
+    </sql>
+    <sql id="groupPromoteConfig_update_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND id = #{id,jdbcType=BIGINT}</if>
+            <if test="groupId != null">AND groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">AND ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">AND platformId = #{platformId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="isNotice != null">AND isNotice = #{isNotice,jdbcType=INTEGER}</if>
+            <if test="countThreshold != null">AND countThreshold = #{countThreshold,jdbcType=INTEGER}</if>
+            <if test="noticeInterval != null">AND noticeInterval = #{noticeInterval,jdbcType=INTEGER}</if>
+            <if test="noticeBeginHour != null">AND noticeBeginHour = #{noticeBeginHour,jdbcType=INTEGER}</if>
+            <if test="noticeEndHour != null">AND noticeEndHour = #{noticeEndHour,jdbcType=INTEGER}</if>
+            <if test="noticeTime != null">AND noticeTime = #{noticeTime,jdbcType=TIMESTAMP}</if>
+            <if test="noticePhone != null">AND noticePhone = #{noticePhone,jdbcType=VARCHAR}</if>
+            <if test="noticeEmail != null">AND noticeEmail = #{noticeEmail,jdbcType=VARCHAR}</if>
+            <if test="modifyTime != null">AND modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+    <sql id="groupPromoteConfig_select_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND groupPromoteConfig.id = #{id,jdbcType=VARCHAR}</if>
+            <if test="groupId != null">AND groupPromoteConfig.groupId = #{groupId,jdbcType=VARCHAR}</if>
+            <if test="ownerId != null">AND groupPromoteConfig.ownerId = #{ownerId,jdbcType=VARCHAR}</if>
+            <if test="coinId != null">AND groupPromoteConfig.coinId = #{coinId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">AND groupPromoteConfig.platformId = #{platformId,jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND groupPromoteConfig.amount = #{amount,jdbcType=DECIMAL}</if>
+            <if test="isNotice != null">AND groupPromoteConfig.isNotice = #{isNotice,jdbcType=INTEGER}</if>
+            <if test="countThreshold != null">AND groupPromoteConfig.countThreshold = #{countThreshold,jdbcType=INTEGER}</if>
+            <if test="noticeInterval != null">AND groupPromoteConfig.noticeInterval = #{noticeInterval,jdbcType=INTEGER}</if>
+            <if test="noticeBeginHour != null">AND groupPromoteConfig.noticeBeginHour = #{noticeBeginHour,jdbcType=INTEGER}</if>
+            <if test="noticeEndHour != null">AND groupPromoteConfig.noticeEndHour = #{noticeEndHour,jdbcType=INTEGER}</if>
+            <if test="noticeTime != null">AND groupPromoteConfig.noticeTime = #{noticeTime,jdbcType=TIMESTAMP}</if>
+            <if test="noticePhone != null">AND groupPromoteConfig.noticePhone = #{noticePhone,jdbcType=VARCHAR}</if>
+            <if test="noticeEmail != null">AND groupPromoteConfig.noticeEmail = #{noticeEmail,jdbcType=VARCHAR}</if>
+            <if test="modifyTime != null">AND groupPromoteConfig.modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND groupPromoteConfig.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+	<insert id="insert" parameterMap="groupPromoteConfigParam">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+	    insert into public_group_promote_config
+        <include refid="groupPromoteConfig_insert_fields"/>
+        values
+        <include refid="groupPromoteConfig_insert_values"/>
+	</insert>
+
+    <update id="update" parameterMap="groupPromoteConfigParam">
+        update public_group_promote_config
+        set <include refid="groupPromoteConfig_update_set"/>
+        <where>
+        <include refid="groupPromoteConfig_update_where_criterias"/>
+        </where>
+    </update>
+
+    <update id="updateById" parameterMap="groupPromoteConfigParam">
+        update public_group_promote_config
+        set <include refid="groupPromoteConfig_update_set"/>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete public_group_promote_config
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <select id="listPage" parameterMap="groupPromoteConfigParam" resultMap="groupPromoteConfigResult">
+        select <include refid="groupPromoteConfig_select_fields"/>
+        from public_group_promote_config redpacket
+        <where>
+        <include refid="groupPromoteConfig_select_where_criterias"/>
+        </where>
+        limit ${start},${offset}
+    </select>
+
+    <select id="list" parameterMap="groupPromoteConfigParam" resultMap="groupPromoteConfigResult">
+        select <include refid="groupPromoteConfig_select_fields"/>
+        from public_group_promote_config groupPromoteConfig
+        <where>
+            <include refid="groupPromoteConfig_select_where_criterias"/>
+        </where>
+    </select>
+
+    <select id="listNotice" parameterMap="groupPromoteConfigParam" resultMap="groupPromoteConfigResult">
+        select <include refid="groupPromoteConfig_select_fields"/>
+        from public_group_promote_config groupPromoteConfig
+        where
+        <![CDATA[
+        groupPromoteConfig.noticeEndHour >= #{noticeHour,jdbcType=INTEGER}
+        and groupPromoteConfig.noticeBeginHour <= #{noticeHour,jdbcType=INTEGER}
+        and ifnull(UNIX_TIMESTAMP(noticeTime),0) < UNIX_TIMESTAMP(#{noticeTime,jdbcType=TIMESTAMP})
+        ]]>
+    </select>
+
+
+
+    <select id="getOneById" parameterType="java.lang.Long" resultMap="groupPromoteConfigResult">
+        select <include refid="groupPromoteConfig_select_fields"/>
+        from public_group_promote_config groupPromoteConfig
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="getOneByGroupAndUserId" parameterMap="groupPromoteConfigParam" resultMap="groupPromoteConfigResult">
+        select <include refid="groupPromoteConfig_select_fields"/>
+        from public_group_promote_config groupPromoteConfig
+        where groupId = #{groupId,jdbcType=VARCHAR} and ownerId = #{ownerId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

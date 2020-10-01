@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IExpActionLogDao">
+    <resultMap type="com.taiyiyun.passport.po.chat.ExpActionLog" id="baseResultMap">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="collect_exp_id" property="collectExpId" jdbcType="INTEGER"/>
+        <result column="action" property="action" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <insert id="save" >
+        insert into public_pic_exp_action_log(user_id,collect_exp_id,action,create_time) values
+
+        <foreach collection="expActionLogList" item="expActionLog" separator=",">
+        (#{expActionLog.userId, jdbcType=VARCHAR},
+        #{expActionLog.collectExpId, jdbcType=INTEGER},
+        #{expActionLog.action, jdbcType=INTEGER},
+        #{expActionLog.createTime, jdbcType=BIGINT})
+        </foreach>
+    </insert>
+
+    <select id="getByTime" resultMap="baseResultMap">
+        select id, user_id,collect_exp_id,action,create_time from public_pic_exp_action_log where user_id =#{userId,jdbcType=VARCHAR} and  create_time>#{createTime,jdbcType=BIGINT}
+    </select>
+
+</mapper>

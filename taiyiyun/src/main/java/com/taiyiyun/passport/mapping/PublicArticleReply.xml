@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicArticleReplyDao">
+
+	<resultMap id="BaseResultMap" type="com.taiyiyun.passport.po.PublicArticleReply">
+		<id column="replyId" property="replyId" jdbcType="BIGINT" />
+		<result column="parentId" property="parentId" jdbcType="BIGINT" />
+		<result column="articleId" property="articleId" jdbcType="VARCHAR" />
+		<result column="userId" property="userId" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="comment" property="comment" jdbcType="VARCHAR" />
+		<result column="deleteOperator" property="deleteOperator" jdbcType="VARCHAR" />
+		<result column="deleteStatus" property="deleteStatus" jdbcType="SMALLINT" />
+		<result column="deleteTime" property="deleteTime" jdbcType="TIMESTAMP" />
+
+		<result column="userName" property="userName" jdbcType="VARCHAR" />
+		<result column="thumbAvatarUrl" property="userPicture" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		replyId, parentId, articleId, userId, createTime, comment,
+		deleteOperator, deleteStatus, deleteTime
+	</sql>
+
+	<sql id="Rich_Column_List">
+		replyId, parentId, articleId, public_article_reply.userId, public_article_reply.createTime, comment,
+		deleteOperator, deleteStatus, deleteTime,
+		userName, thumbAvatarUrl
+	</sql>
+
+
+	<select id="getRichByArticleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Rich_Column_List"/>
+		from public_article_reply left join public_user on public_article_reply.userId = public_user.userId
+		where articleId = #{articleId, jdbcType=VARCHAR} and deleteStatus = 0
+	</select>
+
+	<insert id="insertReply" parameterType="com.taiyiyun.passport.po.PublicArticleReply" useGeneratedKeys="true" keyProperty="replyId">
+		insert into public_article_reply(articleId, userId, comment, createTime)
+		values( #{articleId, jdbcType=VARCHAR}, #{userId, jdbcType=VARCHAR}, #{comment, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP} )
+	</insert>
+
+
+	<insert id="insertReplyChild" parameterType="com.taiyiyun.passport.po.PublicArticleReply" useGeneratedKeys="true" keyProperty="replyId">
+		insert into public_article_reply(parentId, articleId, userId, comment, createTime)
+		values( #{parentId, jdbcType=BIGINT}, #{articleId, jdbcType=VARCHAR}, #{userId, jdbcType=VARCHAR}, #{comment, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP} )
+	</insert>
+
+	<update id="deleteReply" >
+		update public_article_reply set deleteStatus = 1, deleteTime = CURRENT_TIMESTAMP, deleteOperator = #{operator, jdbcType=VARCHAR}
+		where replyId = #{replyId, jdbcType=BIGINT} or parentId = #{replyId, jdbcType=BIGINT}
+	</update>
+
+	<update id="deleteReplyChild">
+		update public_article_reply set deleteStatus = 1, deleteTime = CURRENT_TIMESTAMP, deleteOperator = #{operator, jdbcType=VARCHAR}
+		where parentId = #{parentId, jdbcType=BIGINT} and replyId >= #{replyId, jdbcType=BIGINT}
+	</update>
+
+</mapper>

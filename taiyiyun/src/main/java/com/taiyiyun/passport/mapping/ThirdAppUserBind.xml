@@ -1,0 +1,112 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IThirdAppUserBindDao">
+
+	<resultMap type="com.taiyiyun.passport.po.ThirdAppUserBindExt" id="extResultMap">
+		<id column="id" property="id"/>
+		<result column="uuid" property="uuid"/>
+		<result column="appId" property="appId"/>
+		<result column="uniqueKey" property="uniqueKey"/>
+		<result column="uniqueAddress" property="uniqueAddress"/>
+
+		<result column="bindTime" property="bindTime"/>
+		<result column="userKey" property="userKey" />
+		<result column="userSecretKey" property="userSecretKey"/>
+		<result column="accessTokenExpireTime" property="accessTokenExpireTime"/>
+		<result column="bindExpireTime" property="bindExpireTime"/>
+		<result column="bindStatus" property="bindStatus"/>
+
+		<result column="appKey" property="appKey"/>
+		<result column="appSecret" property="appSecret"/>
+		<result column="appName" property="appName"/>
+		<result column="logoUrl" property="logoUrl"/>
+		<result column="thirdpartAppkey" property="thirdpartAppkey"/>
+		<result column="coinBindUrl" property="coinBindUrl"/>
+		<result column="coinCallUrl" property="coinCallUrl"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		uuid, uniqueKey, bindTime, userKey, userSecretKey, accessTokenExpireTime, bindExpireTime, bindStatus, uniqueAddress
+	</sql>
+
+	<select id="getRelateId" resultType="java.lang.String" parameterType="String">
+		select userkey from third_app_coin_bind where left(bindtime, 10) &lt; unix_timestamp(DATE_FORMAT(adddate(now(),-1),'%Y-%m-%d'))
+		and appId = #{appId, jdbcType=VARCHAR} order by bindtime desc limit 1
+	</select>
+
+	<select id="getExtByCondition" resultMap="extResultMap">
+		select app.appKey, app.appSecret, app.appName, app.logoUrl, app.thirdpartAppkey, app.appId, app.coinBindUrl, app.coinCallUrl,
+		<include refid="Base_Column_List"/>
+		from third_app app left join third_app_coin_bind bind on app.appId = bind.appId and bindStatus = 1
+		<trim>
+			<if test="uuid != null">AND bind.uuid = #{uuid, jdbcType=VARCHAR}</if>
+		</trim>
+		where canBindCoin = 1
+		<trim prefix="AND" prefixOverrides="AND">
+			<if test="appId != null">AND app.appId = #{appId, jdbcType=VARCHAR}</if>
+			<if test="appKey != null">AND app.appKey = #{appKey, jdbcType=VARCHAR}</if>
+		</trim>
+
+
+	</select>
+
+	<select id="getOneExtByCondition" resultMap="extResultMap">
+		select app.appKey, app.appSecret, app.appName, app.logoUrl, app.thirdpartAppkey, app.appId, app.coinBindUrl, app.coinCallUrl,
+		<include refid="Base_Column_List"/>
+		from third_app app left join third_app_coin_bind bind on app.appId = bind.appId and bindStatus = 1
+		<trim>
+			<if test="uuid != null">AND bind.uuid = #{uuid, jdbcType=VARCHAR}</if>
+		</trim>
+		where canBindCoin = 1
+		<trim prefix="AND" prefixOverrides="AND">
+			<if test="appId != null">AND app.appId = #{appId, jdbcType=VARCHAR}</if>
+			<if test="appKey != null">AND app.appKey = #{appKey, jdbcType=VARCHAR}</if>
+		</trim>
+		limit 1
+	</select>
+
+	<insert id="upsertRecord">
+		insert into third_app_coin_bind(uuid, appId, bindExireTime) values(#{uuid, jdbcType=VARCHAR}, #{appId, jdbcType=VARCHAR}, CURRENT_TIMESTAMP)
+		ON DUPLICATE KEY update
+		bindExireTime = CURRENT_TIMESTAMP
+	</insert>
+
+	<!--<update id="updateBinding" parameterType="com.taiyiyun.passport.po.ThirdAppUserBind"  useGeneratedKeys="true" keyProperty="id">-->
+		<!--insert into third_app_coin_bind(-->
+			<!--uuid, appId, uniqueKey, bindTime, userKey, userSecretKey, bindStatus, uniqueAddress-->
+		<!--) values(-->
+			<!--#{uuid, jdbcType=VARCHAR}, #{appId, jdbcType=VARCHAR}, #{uniqueKey, jdbcType=VARCHAR}, #{bindTime, jdbcType=BIGINT}, #{userKey, jdbcType=VARCHAR},-->
+			<!--#{userSecretKey, jdbcType=VARCHAR}, 1, #{uniqueAddress, jdbcType=VARCHAR}-->
+		<!--)-->
+		<!--ON DUPLICATE KEY update-->
+		<!--uniqueKey = #{uniqueKey, jdbcType=VARCHAR},-->
+		<!--uniqueAddress = #{uniqueAddress, jdbcType=VARCHAR},-->
+		<!--bindTime = #{bindTime, jdbcType=BIGINT},-->
+		<!--userKey = #{userKey, jdbcType=VARCHAR},-->
+		<!--uniqueAddress = #{uniqueAddress, jdbcType=VARCHAR},-->
+		<!--userSecretKey = #{userSecretKey, jdbcType=VARCHAR},-->
+		<!--bindStatus = 1-->
+	<!--</update>-->
+
+	<update id="updateBinding" parameterType="com.taiyiyun.passport.po.ThirdAppUserBind"  useGeneratedKeys="true" keyProperty="id">
+		insert into third_app_coin_bind(
+		uuid, appId, uniqueKey, bindTime, userKey, userSecretKey, bindStatus, uniqueAddress
+		) values(
+		#{uuid, jdbcType=VARCHAR}, #{appId, jdbcType=VARCHAR}, #{uniqueKey, jdbcType=VARCHAR}, #{bindTime, jdbcType=BIGINT}, #{userKey, jdbcType=VARCHAR},
+		#{userSecretKey, jdbcType=VARCHAR}, 1, #{uniqueAddress, jdbcType=VARCHAR}
+		)
+	</update>
+
+	<update id="updateUnBinding" >
+		update third_app_coin_bind set
+		bindStatus = null
+		where uuid = #{uuid, jdbcType=VARCHAR} and appId = #{appId, jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateToken" parameterType="com.taiyiyun.passport.po.ThirdAppUserBind">
+		update third_app_coin_bind set
+		accessToken = #{accessToken, jdbcType=VARCHAR},
+		accessTokenExpireTime = #{accessTokenExpireTime, jdbcType=TIMESTAMP}
+		where uuid = #{uuid, jdbcType=VARCHAR} and appId = #{appId, jdbcType=VARCHAR}
+	</update>
+
+</mapper>

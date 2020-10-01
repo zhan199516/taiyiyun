@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.ILoginLogDao">
+	<resultMap type="com.taiyiyun.passport.po.LoginLog" id="succeedResultMap">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+		<result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+		<result column="ip" property="ip" jdbcType="VARCHAR"/>
+		<result column="deviceId" property="deviceId" jdbcType="VARCHAR"/>
+		<result column="gps" property="gps" jdbcType="VARCHAR"/>
+		<result column="markTime" property="markTime" jdbcType="BIGINT"/>
+		<result column="deviceName" property="deviceName" jdbcType="VARCHAR"/>
+ 	</resultMap>
+
+	<select id="getRecentMarksLogs" resultMap="succeedResultMap">
+		select * from login_log
+		where markTime is not null
+		and mobile = #{mobile, jdbcType=VARCHAR}
+		order by markTime desc
+		limit #{limit, jdbcType=INTEGER}
+	</select>
+
+	<update id="updateMarkTime" parameterType="com.taiyiyun.passport.po.LoginLog">
+		update login_log set markTime = #{markTime, jdbcType=BIGINT}
+		where id = #{id, jdbcType=BIGINT}
+	</update>
+
+	<insert id="newLog" parameterType="com.taiyiyun.passport.po.LoginLog">
+		insert into login_log
+
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">mobile,</if>
+			<if test="uuid != null">uuid,</if>
+			<if test="ip != null">ip,</if>
+			<if test="deviceId != null">deviceId,</if>
+			<if test="deviceName != null">deviceName,</if>
+			<if test="gps != null">gps,</if>
+			<if test="markTime != null">markTime,</if>
+		</trim>
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">#{mobile, jdbcType=VARCHAR},</if>
+			<if test="uuid != null">#{uuid, jdbcType=VARCHAR},</if>
+			<if test="ip != null">#{ip, jdbcType=VARCHAR},</if>
+			<if test="deviceId != null">#{deviceId, jdbcType=VARCHAR},</if>
+			<if test="deviceName != null">#{deviceName, jdbcType=VARCHAR},</if>
+			<if test="gps != null">#{gps, jdbcType=VARCHAR},</if>
+			<if test="markTime != null">#{markTime, jdbcType=BIGINT},</if>
+		</trim>
+	</insert>
+
+	<insert id="newFailedLog" parameterType="com.taiyiyun.passport.po.LoginLog">
+		insert into login_log_failed
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">mobile,</if>
+			<if test="ip != null">ip,</if>
+			<if test="deviceId != null">deviceId,</if>
+			<if test="deviceName != null">deviceName,</if>
+			<if test="gps != null">gps,</if>
+		</trim>
+
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mobile != null">#{mobile, jdbcType=VARCHAR},</if>
+			<if test="ip != null">#{ip, jdbcType=VARCHAR},</if>
+			<if test="deviceId != null">#{deviceId, jdbcType=VARCHAR},</if>
+			<if test="deviceName != null">#{deviceName, jdbcType=VARCHAR},</if>
+			<if test="gps != null">#{gps, jdbcType=VARCHAR},</if>
+		</trim>
+	</insert>
+
+
+
+</mapper>

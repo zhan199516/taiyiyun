@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taiyiyun.passport.dao.IPublicRedPacketLimitDao">
+
+    <parameterMap id="publicRedPacketLimitParam" type="com.taiyiyun.passport.po.PublicRedPacketLimit"/>
+
+    <resultMap id="publicRedPacketLimitResult" type="com.taiyiyun.passport.po.PublicRedPacketLimit">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="userId" property="userId" jdbcType="VARCHAR" />
+        <result column="platformId" property="platformId" jdbcType="VARCHAR" />
+        <result column="coinCount" property="coinCount" jdbcType="DECIMAL" />
+        <result column="cashAmount" property="cashAmount" jdbcType="DECIMAL" />
+        <result column="limitStatus" property="limitStatus" jdbcType="INTEGER" />
+        <result column="dataSign" property="dataSign" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP" />
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="redpacket_limit_select_fields">
+        redpacketLimit.id,
+        redpacketLimit.userId,
+        redpacketLimit.platformId,
+        redpacketLimit.coinCount,
+        redpacketLimit.cashAmount,
+        redpacketLimit.limitStatus,
+        redpacketLimit.dataSign,
+        redpacketLimit.remark,
+        redpacketLimit.modifyTime,
+        redpacketLimit.createTime
+    </sql>
+
+    <sql id="redpacket_limit_insert_fields">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">id,</if>
+          <if test="userId != null">userId,</if>
+          <if test="platformId != null">platformId,</if>
+          <if test="coinCount != null">coinCount,</if>
+          <if test="cashAmount != null">cashAmount,</if>
+          <if test="limitStatus != null">limitStatus,</if>
+          <if test="dataSign != null">dataSign,</if>
+          <if test="remark != null">remark,</if>
+          <if test="modifyTime != null">modifyTime,</if>
+          <if test="createTime != null">createTime,</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacket_limit_insert_values">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">#{id,jdbcType=BIGINT},</if>
+          <if test="userId != null">#{userId,jdbcType=VARCHAR},</if>
+          <if test="platformId != null">#{platformId,jdbcType=VARCHAR},</if>
+          <if test="coinCount != null">#{coinCount,jdbcType=DECIMAL},</if>
+          <if test="cashAmount != null">#{cashAmount,jdbcType=DECIMAL},</if>
+          <if test="limitStatus != null">#{limitStatus,jdbcType=INTEGER},</if>
+          <if test="dataSign != null">#{dataSign,jdbcType=VARCHAR},</if>
+          <if test="remark != null">#{remark,jdbcType=VARCHAR},</if>
+          <if test="modifyTime != null">#{modifyTime,jdbcType=TIMESTAMP},</if>
+          <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacket_limit_update_set">
+        <trim prefixOverrides=",">
+            <if test="id != null">, id = #{id,jdbcType=BIGINT}</if>
+            <if test="userId != null">, userId = #{userId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">, platformId = #{userId,jdbcType=VARCHAR}</if>
+            <if test="coinCount != null">, coinCount = #{coinCount,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">, cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="limitStatus != null">, limitStatus = #{limitStatus,jdbcType=INTEGER}</if>
+            <if test="dataSign != null">, dataSign = #{dataSign,jdbcType=VARCHAR}</if>
+            <if test="remark != null">, remark = #{remark,jdbcType=VARCHAR}</if>
+            <if test="modifyTime != null">, modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">, createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+    <sql id="redpacket_limit_update_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND id = #{packId,jdbcType=BIGINT}</if>
+            <if test="userId != null">AND userId = #{userId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">AND platformId = #{platformId,jdbcType=VARCHAR}</if>
+            <if test="coinCount != null">AND coinCount = #{coinCount,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">AND cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="limitStatus != null">AND limitStatus = #{limitStatus,jdbcType=INTEGER}</if>
+            <if test="dataSign != null">AND dataSign = #{dataSign,jdbcType=VARCHAR},</if>
+            <if test="remark != null">AND remark = #{remark,jdbcType=VARCHAR},</if>
+            <if test="modifyTime != null">AND modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+    <sql id="redpacket_limit_select_where_criterias">
+        <trim prefixOverrides="AND">
+            <if test="id != null">AND redpacketLimit.id = #{id,jdbcType=BIGINT}</if>
+            <if test="userId != null">AND redpacketLimit.userId = #{userId,jdbcType=VARCHAR}</if>
+            <if test="platformId != null">AND redpacketLimit.platformId = #{platformId,jdbcType=VARCHAR}</if>
+            <if test="coinCount != null">AND redpacketLimit.coinCount = #{coinCount,jdbcType=DECIMAL}</if>
+            <if test="cashAmount != null">AND redpacketLimit.cashAmount = #{cashAmount,jdbcType=DECIMAL}</if>
+            <if test="limitStatus != null">AND redpacketLimit.limitStatus = #{limitStatus,jdbcType=INTEGER}</if>
+            <if test="dataSign != null">AND redpacketLimit.dataSign = #{dataSign,jdbcType=VARCHAR}</if>
+            <if test="remark != null">AND redpacketLimit.remark = #{remark,jdbcType=VARCHAR}</if>
+            <if test="modifyTime != null">AND redpacketLimit.modifyTime = #{modifyTime,jdbcType=TIMESTAMP}</if>
+            <if test="createTime != null">AND redpacketLimit.createTime = #{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+    </sql>
+
+	<insert id="insert" parameterMap="publicRedPacketLimitParam">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+	    insert into public_redpacket_limit
+        <include refid="redpacket_limit_insert_fields"/>
+        values
+        <include refid="redpacket_limit_insert_values"/>
+	</insert>
+
+    <update id="update" parameterMap="publicRedPacketLimitParam">
+        update public_redpacket_limit
+        set <include refid="redpacket_limit_update_set"/>
+        <where>
+        <include refid="redpacket_limit_update_where_criterias"/>
+        </where>
+    </update>
+
+    <update id="updateById" parameterMap="publicRedPacketLimitParam">
+        update public_redpacket_limit
+        set <include refid="redpacket_limit_update_set"/>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete public_redpacket_limit
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <select id="listPage" parameterMap="publicRedPacketLimitParam" resultMap="publicRedPacketLimitResult">
+        select <include refid="redpacket_limit_select_fields"/>
+        from public_redpacket_limit redpacketLimit
+        where <include refid="redpacket_limit_select_where_criterias"/>
+        limit ${start},${offset}
+    </select>
+
+    <select id="list" parameterMap="publicRedPacketLimitParam" resultMap="publicRedPacketLimitResult">
+        select <include refid="redpacket_limit_select_fields"/>
+        from public_redpacket_limit redpacketLimit
+        <where>
+        <include refid="redpacket_limit_select_where_criterias"/>
+        </where>
+    </select>
+
+    <select id="getOneById" parameterMap="publicRedPacketLimitParam" resultMap="publicRedPacketLimitResult">
+        select <include refid="redpacket_limit_select_fields"/>
+        from public_redpacket_limit redpacketLimit
+        where redpacketLimit.id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="listByUserId" parameterMap="publicRedPacketLimitParam" resultMap="publicRedPacketLimitResult">
+        select <include refid="redpacket_limit_select_fields"/>
+        from public_redpacket_limit redpacketLimit
+        where redpacketLimit.userId = #{userId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

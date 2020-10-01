@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd  
+                        http://www.springframework.org/schema/context  
+                        http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+                        http://www.springframework.org/schema/mvc  
+                        http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd ">
+	
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.taiyiyun.passport" />
+	<!--<context:component-scan base-package="com.taiyiyun.passport.sqlserver" />-->
+	
+	<!-- 引入配置文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<set>
+				<value>classpath:mail.properties</value>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:mongo.properties</value>
+				<value>classpath:redis.properties</value>
+				<value>classpath:jdbc-mosquitto.properties</value>
+				<value>classpath:jdbc-sqlserver.properties</value>
+			</set>
+		</property>
+	</bean>
+
+	<!-- 食品链配置文件 -->
+	<bean id="fchainConfig" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:fchain-config.properties</value>
+			</list>
+		</property>
+		<!-- 设置编码格式 -->
+		<property name="fileEncoding" value="UTF-8"></property>
+	</bean>
+
+	<import resource="spring-mail.xml"/>
+	<import resource="spring-redis.xml"/>
+	<import resource="spring-mybatis.xml"/>
+	<import resource="spring-mongo.xml"/>
+	<import resource="spring-mybatis-mosquitto.xml"/>
+	<import resource="spring-mybatis-sqlserver.xml"/>
+</beans>
